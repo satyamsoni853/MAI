@@ -15,15 +15,12 @@
       :root {
         --header-gap: 53.33px;
         /* Define standard card heights for CSS calculations */
-        --short-card-height: 350px;
-        --tall-card-height: 520px;
+        /* UPDATED: Heights adjusted for 1200px total page height */
+        --short-card-height: 280px; 
+        --tall-card-height: 449px; 
         --card-gap: 20px; /* Assuming 20px gap for simpler calc */
       }
 
-      body {
-        font-family: "Inter", sans-serif;
-        background-color: #f7f9fb;
-      }
 
       /* Define keyframes for the custom animation */
       @keyframes fadeIn {
@@ -73,7 +70,7 @@
       /* Fix for absolute positioning to be relative to the parent */
       .blog-card-container {
         position: relative;
-        /* Set a height that accommodates the tallest card plus a row gap */
+        /* UPDATED: Height set to 449px*2 + 20px = 918px for the 1200px total page height */
         height: calc(var(--tall-card-height) * 2 + var(--card-gap));
         max-height: calc(var(--tall-card-height) * 2 + var(--card-gap));
       }
@@ -155,9 +152,12 @@
       // ----------------------------------------------------------------------------------
       // --- IMPORTANT: HEIGHT AND POSITIONING LOGIC FOR STAGGERED LAYOUT ---
       // ----------------------------------------------------------------------------------
-      const SHORT_H = 350; // h-[350px]
-      const TALL_H = 520; // New taller height
+      // UPDATED: Heights adjusted for 1200px total page height
+      const SHORT_H = 280; // h-[280px] (Previously 350)
+      const TALL_H = 449; // New taller height (Previously 520)
       const GAP_H = 20; // Gap between rows (20px)
+      
+      // Total Card Container Height: 449px * 2 + 20px = 918px
 
       const blogPosts = [
         // --- ROW 1 ---
@@ -167,8 +167,8 @@
           price: "Reading Time: 5 min",
           location: "May 15, 2024",
           image: "../../Sixth Section/beautiful-interior-design.png",
-          // Card 1: TALL (Height 520px)
-          heightClass: "h-[520px]",
+          // Card 1: TALL (Height 449px)
+          heightClass: "h-[449px]", // UPDATED
           topClass: "top-0",
           leftClass: "left-0",
           widthClass: "w-full md:w-[32.5%]",
@@ -187,9 +187,10 @@
           location: "April 28, 2024",
           image:
             "../../Sixth Section/cosmetics-product-advertising-stand-exhibition-wooden-podium-green-background-with-leaves-sha.png",
-          // Card 2: SHORT (Height 350px)
-          heightClass: "h-[350px]",
-          topClass: "top-[540px] md:top-0",
+          // Card 2: SHORT (Height 280px)
+          heightClass: "h-[280px]", // UPDATED
+          // Positioned after Card 1's height (449px) + gap (20px) = 469px
+          topClass: "top-[469px] md:top-0", // UPDATED
           leftClass: "left-0 md:left-[33.75%]",
           widthClass: "w-full md:w-[32.5%]",
           titleSize: "text-2xl md:text-[28px] leading-tight",
@@ -206,9 +207,10 @@
           price: "Reading Time: 7 min",
           location: "March 10, 2024",
           image: "../../Sixth Section/high-detailed-picture-modern-interior-design.png",
-          // Card 3: TALL (Height 520px)
-          heightClass: "h-[520px]",
-          topClass: "top-[910px] md:top-0",
+          // Card 3: TALL (Height 449px)
+          heightClass: "h-[449px]", // UPDATED
+          // Positioned after Card 2's start (469px) + height (280px) + gap (20px) = 769px
+          topClass: "top-[769px] md:top-0", // UPDATED
           leftClass: "left-0 md:left-[67.5%]",
           widthClass: "w-full md:w-[32.5%]",
           titleSize: "text-2xl md:text-[28px] leading-tight",
@@ -228,9 +230,10 @@
           price: "Reading Time: 4 min",
           location: "February 20, 2024",
           image: "../../Sixth Section/minimalist-decor-ambient-lighting.png",
-          // Card 4: SHORT (Height 350px). Starts after the TALL Card 1.
-          heightClass: "h-[350px]",
-          topClass: "top-[1440px] md:top-[calc(520px+20px)]",
+          // Card 4: SHORT (Height 280px). Starts after the TALL Card 1.
+          heightClass: "h-[280px]", // UPDATED
+          // Positioned after Card 1's height (449px) + gap (20px) = 469px
+          topClass: "top-[1238px] md:top-[calc(449px+20px)]", // UPDATED
           leftClass: "left-0",
           widthClass: "w-full md:w-[32.5%]",
           titleSize: "text-2xl md:text-[28px] leading-tight",
@@ -248,9 +251,10 @@
           location: "January 5, 2024",
           image:
             "../../Sixth Section/modern-apartment-with-ecofriendly-features-energyefficient-systems.png",
-          // Card 5: TALL (Height 520px). Starts after the SHORT Card 2.
-          heightClass: "h-[520px]",
-          topClass: "top-[1810px] md:top-[calc(350px+20px)]",
+          // Card 5: TALL (Height 449px). Starts after the SHORT Card 2.
+          heightClass: "h-[449px]", // UPDATED
+          // Positioned after Card 2's height (280px) + gap (20px) = 300px
+          topClass: "top-[1538px] md:top-[calc(280px+20px)]", // UPDATED
           leftClass: "left-0 md:left-[33.75%]",
           widthClass: "w-full md:w-[32.5%]",
           titleSize: "text-2xl md:text-[28px] leading-tight",
@@ -268,9 +272,10 @@
           price: "Reading Time: 8 min",
           location: "December 1, 2023",
           image: "../../Sixth Section/photo-interior-modern-design-room-3d-illustration.png",
-          // Card 6: SHORT (Height 350px). Starts after the TALL Card 3.
-          heightClass: "h-[350px]",
-          topClass: "top-[2350px] md:top-[calc(520px+20px)]",
+          // Card 6: SHORT (Height 280px). Starts after the TALL Card 3.
+          heightClass: "h-[280px]", // UPDATED
+          // Positioned after Card 3's height (449px) + gap (20px) = 469px
+          topClass: "top-[2007px] md:top-[calc(449px+20px)]", // UPDATED
           leftClass: "left-0 md:left-[67.5%]",
           widthClass: "w-full md:w-[32.5%]",
           titleSize: "text-2xl md:text-[28px] leading-tight",
@@ -294,7 +299,7 @@
         container.innerHTML = "";
 
         const isMobile = window.innerWidth < 768; // Tailwind's 'md' breakpoint
-        const desktopHeight = TALL_H * 2 + GAP_H; // Calculate max height
+        const desktopHeight = TALL_H * 2 + GAP_H; // Calculate max height (918px)
 
         if (isMobile) {
           // On mobile, the cards are stacked. Calculate height to auto.

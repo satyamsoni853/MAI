@@ -1,247 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>End to End Home Service Section - Final Layered Animation</title>
-    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Inter & Montserrat Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-        /* Custom Keyframes for Fade-in Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-1rem); }
-            to { opacity: 1; transform: translateY(0); }
+      /* Custom Keyframes for Fade-in Animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-1rem);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-        /* Apply the main fade-in animation */
-        .animate-fade-in {
-            animation: fadeIn 0.6s ease-out forwards;
-        }
+      /* Apply the main fade-in animation */
+      .animate-fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
 
-        /* Custom style for the Montserrat font */
-        .font-montserrat {
-            font-family: 'Montserrat', Helvetica, sans-serif;
-        }
-        
-        /* Custom backdrop filter styling */
-        .backdrop-blur-custom {
-            background-color: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(16px) brightness(110%);
-            -webkit-backdrop-filter: blur(16px) brightness(110%);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 
-                        inset 1px 0 0 rgba(255, 255, 255, 0.32), 
-                        inset 0 -1px 1px rgba(0, 0, 0, 0.13), 
-                        inset -1px 0 1px rgba(0, 0, 0, 0.11);
-        }
+      /* Custom style for the Montserrat font */
+      .font-montserrat {
+        font-family: "Montserrat", Helvetica, sans-serif;
+      }
 
-        /* ---------------------------------------------------- */
-        /* --- DYNAMIC SCROLL ANIMATION CSS (REFLOW) ---        */
-        /* ---------------------------------------------------- */
-        
-        /* Container for the Stats Section (Initial State: 1 column) */
-        #stats-content-container {
-            display: grid;
-            grid-template-columns: 1fr; /* Default: stack stats above images on mobile/default */
-            gap: 3rem; 
-            transition: grid-template-columns 1.2s ease-in-out;
-        }
+      /* Custom backdrop filter styling */
+      .backdrop-blur-custom {
+        background-color: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(16px) brightness(110%);
+        -webkit-backdrop-filter: blur(16px) brightness(110%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4),
+          inset 1px 0 0 rgba(255, 255, 255, 0.32),
+          inset 0 -1px 1px rgba(0, 0, 0, 0.13),
+          inset -1px 0 1px rgba(0, 0, 0, 0.11);
+      }
 
-        /* Target state when in view (Desktop only: 2 columns, stats on left, images on right) */
-        @media (min-width: 1024px) { /* Tailwind's 'lg' breakpoint */
-            #stats-content-container.in-view {
-                grid-template-columns: 3fr 2fr; /* Ratio to fit images beside stats */
-            }
-        }
-        
-        /* Apply to the stats description itself (1st column) */
-        .stats-text {
-            grid-area: stats;
-            transition: all 1.2s ease-in-out;
-        }
+      /* ---------------------------------------------------- */
+      /* --- DYNAMIC SCROLL ANIMATION CSS (REFLOW) ---        */
+      /* ---------------------------------------------------- */
 
-        /* Apply to the animated images block (2nd column) */
-        .animated-images-block {
-            grid-area: images;
-            min-height: 450px; /* Increased height to accommodate the layered cards */
-            transition: all 1.2s ease-in-out;
-            position: relative; /* Container for absolute children */
-        }
+      /* Container for the Stats Section (Initial State: 1 column) */
+      #stats-content-container {
+        display: grid;
+        grid-template-columns: 1fr; /* Default: stack stats above images on mobile/default */
+        gap: 3rem;
+        transition: grid-template-columns 1.2s ease-in-out;
+      }
 
-        /* Initial positioning for desktop: Place animated images *below* stats in the 1-column layout */
-        .stats-text { grid-row: 1; }
-        .animated-images-block { grid-row: 2; }
-
-        /* Final positioning for desktop (in-view): Place animated images *next to* stats in the 2-column layout */
-        @media (min-width: 1024px) {
-            #stats-content-container.in-view .stats-text {
-                grid-column: 1 / 2;
-                grid-row: 1 / 2;
-            }
-            #stats-content-container.in-view .animated-images-block {
-                grid-column: 2 / 3;
-                grid-row: 1 / 2;
-            }
+      /* Target state when in view (Desktop only: 2 columns, stats on left, images on right) */
+      @media (min-width: 1024px) {
+        /* Tailwind's 'lg' breakpoint */
+        #stats-content-container.in-view {
+          /* Change to a 2-column layout (stats on left, animated images on right) */
+          grid-template-columns: 3fr 2fr;
         }
-        
-        /* ---------------------------------------------------- */
-        /* --- LAYERED CARD STYLES ---                          */
-        /* ---------------------------------------------------- */
-        
-        /* Wrapper for layered positioning */
+      }
+
+      /* Apply to the stats description itself (1st column) */
+      .stats-text {
+        grid-area: stats;
+        transition: all 1.2s ease-in-out;
+      }
+
+      /* Apply to the animated images block (2nd column) */
+      .animated-images-block {
+        grid-area: images;
+        min-height: 400px;
+        transition: all 1.2s ease-in-out;
+        position: relative; /* Container for absolute children */
+      }
+
+      /* Initial positioning for desktop: Place animated images *below* stats in the 1-column layout */
+      .stats-text {
+        grid-row: 1;
+      }
+      .animated-images-block {
+        grid-row: 2;
+      }
+
+      /* Final positioning for desktop (in-view): Place animated images *next to* stats in the 2-column layout */
+      @media (min-width: 1024px) {
+        #stats-content-container.in-view .stats-text {
+          grid-column: 1 / 2;
+          grid-row: 1 / 2;
+        }
+        #stats-content-container.in-view .animated-images-block {
+          grid-column: 2 / 3;
+          grid-row: 1 / 2;
+        }
+      }
+
+      /* ---------------------------------------------------- */
+      /* --- LAYERED CARD STYLES ---                          */
+      /* ---------------------------------------------------- */
+
+      /* Wrapper for layered positioning */
+      #layered-card-wrapper {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: none; /* Hidden on mobile */
+      }
+
+      @media (min-width: 1024px) {
         #layered-card-wrapper {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: none; /* Hidden on mobile */
+          display: block; /* Visible on desktop */
+        }
+      }
+
+      /* Style for the individual cards when inside the wrapper */
+      .animated-card {
+        position: absolute;
+        width: 80%; /* Width of the card container */
+        height: auto;
+        aspect-ratio: 400 / 217;
+        top: 50%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        /* Initial state: collapsed, scaled down, and hidden */
+        transform: translate(-50%, -50%) scale(0.7);
+        transform-origin: center center;
+        transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth transition */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        border-radius: 13.33px;
+        overflow: hidden;
+      }
+
+      /* Layered positions on desktop when IN VIEW */
+      @media (min-width: 1024px) {
+        /* Card 6: Back layer, scaled down, offset top-left */
+        #stats-content-container.in-view .card-6-moved {
+          transform: translate(-80%, -90%) scale(0.9);
+          z-index: 10;
+          opacity: 1;
         }
 
-        @media (min-width: 1024px) {
-            #layered-card-wrapper {
-                display: block; /* Visible on desktop */
-            }
+        /* Card 7: Middle layer, more prominent */
+        #stats-content-container.in-view .card-7-moved {
+          transform: translate(-50%, -50%) scale(1);
+          z-index: 20;
+          opacity: 1;
         }
 
-        /* Style for the individual cards when inside the wrapper */
-        .animated-card {
-            position: absolute;
-            width: 80%; /* Width of the card container */
-            height: auto;
-            aspect-ratio: 400 / 217;
-            top: 50%; /* Center vertically */
-            left: 50%; /* Center horizontally */
-            transform: translate(-50%, -50%) scale(0.7); /* Initial collapsed state */
-            transform-origin: center center;
-            transition: all 1.0s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth transition */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
-            opacity: 0; /* Hidden initially */
-            border-radius: 13.33px; /* Ensure rounded corners are applied */
-            overflow: hidden;
+        /* Card 8: Front layer, full scale, bottom-right offset */
+        #stats-content-container.in-view .card-8-moved {
+          transform: translate(-20%, 0%) scale(1.1);
+          z-index: 30;
+          opacity: 1;
         }
-
-        /* Layered positions on desktop when IN VIEW */
-        @media (min-width: 1024px) {
-            
-            /* Card 6: Back layer, scaled down, offset top-left */
-            #stats-content-container.in-view .card-6-moved {
-                transform: translate(-80%, -90%) scale(0.9);
-                z-index: 10;
-                opacity: 1;
-            }
-            
-            /* Card 7: Middle layer, more prominent */
-            #stats-content-container.in-view .card-7-moved {
-                transform: translate(-50%, -50%) scale(1);
-                z-index: 20;
-                opacity: 1;
-            }
-            
-            /* Card 8: Front layer, full scale, bottom-right offset */
-            #stats-content-container.in-view .card-8-moved {
-                transform: translate(-20%, 0%) scale(1.1);
-                z-index: 30;
-                opacity: 1;
-            }
-        }
+      }
     </style>
-</head>
-<body class="bg-[#f7f9fb] min-h-[200vh]">
-
-    <!-- Outer Section Container -->
+  </head>
+  <body class=" overflow-x-hidden">
     <section class="w-full relative">
-        <div 
-            id="main-content"
-            class="flex flex-col items-center gap-[53.33px] translate-y-[-1rem] opacity-0 animate-fade-in"
-            style="--animation-delay:200ms;"
-        >
-            <article class="w-full bg-white py-16 px-4 md:px-[100px]">
-                <div class="max-w-[1720px] mx-auto">
-                    
-                    <!-- Header and Button Row -->
-                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-16 gap-4">
-                        <div class="flex-1">
-                            <h2 class="font-montserrat font-semibold text-[#333333] text-[clamp(28px,4vw,43px)] tracking-[0] leading-tight mb-4">
-                                End to End Home Service
-                            </h2>
-                        </div>
-                        <button class="flex-shrink-0 w-full md:w-auto h-auto bg-[#003f6b] rounded-[13.33px] border-[1.04px] border-solid border-[#003f6b] shadow-[0px_4.18px_4.18px_#00000040] px-[13.33px] py-[13.33px] hover:bg-[#003f6b]/90 transition-colors">
-                            <span class="font-montserrat font-bold text-neutral-100 text-[22px] tracking-[0] leading-normal">
-                                View All Services
-                            </span>
-                        </button>
-                    </div>
+      <div
+        id="main-content"
+        class="flex flex-col items-center gap-[53.33px] translate-y-[-1rem] opacity-0 animate-fade-in"
+        style="--animation-delay: 200ms"
+      >
+        <article class="w-full bg-white py-16 px-4 md:px-[100px]">
+          <div class="max-w-[1720px] mx-auto">
+            <div
+              class="flex flex-col md:flex-row items-start md:items-center justify-between mb-16 gap-4"
+            >
+              <div class="flex-1">
+                <h2
+                  class="font-montserrat font-semibold text-[#333333] text-[clamp(28px,4vw,43px)] tracking-[0] leading-tight mb-4"
+                >
+                  End to End Home Service
+                </h2>
+              </div>
+              <button
+                class="flex-shrink-0 w-full md:w-auto h-auto bg-[#003f6b] rounded-[13.33px] border-[1.04px] border-solid border-[#003f6b] shadow-[0px_4.18px_4.18px_#00000040] px-[13.33px] py-[13.33px] hover:bg-[#003f6b]/90 transition-colors"
+              >
+                <span
+                  class="font-montserrat font-bold text-neutral-100 text-[22px] tracking-[0] leading-normal"
+                >
+                  View All Services
+                </span>
+              </button>
+            </div>
 
-                    <!-- Service Cards Grid (Initial display of all 8 cards) -->
-                    <div id="service-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-16">
-                        <!-- All 8 card elements are injected here by JS -->
-                    </div>
+            <div
+              id="service-grid"
+              class="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-16"
+            ></div>
 
-                    <!-- Scroll Animation Target and Content -->
-                    <div id="stats-section" class="pt-10">
-                        <div id="stats-content-container">
-                            
-                            <!-- Stats and Description (Left Side) -->
-                            <div class="stats-text">
-                                <h3 class="font-montserrat font-semibold text-[#333333] text-[clamp(28px,4vw,43px)] tracking-[0] leading-tight mb-8">
-                                    The Real Stats Behind UK Home Services
-                                </h3>
-                                <p class="font-montserrat font-normal text-black text-[clamp(16px,2vw,22px)] tracking-[0] leading-normal opacity-80 max-w-[755px]">
-                                    Over **32%** of homeowners say hiring a trustworthy professional is
-                                    harder than the actual renovation. Around **1 in 4** projects in the
-                                    UK either get delayed or dropped completely just because people
-                                    can't find the right help. We built this platform to
-                                    finally close the gap between people who need home or commercial
-                                    services and the experts who can actually get the job done.
-                                </p>
-                            </div>
-
-                            <!-- Animated Image Block (Right Side) -->
-                            <div class="animated-images-block">
-                                <div id="layered-card-wrapper">
-                                    <!-- Cards 6, 7, and 8 are cloned/placed here for desktop layering -->
-                                </div>
-                                <div id="stacked-card-wrapper" class="block lg:hidden flex flex-col gap-6">
-                                    <!-- Cards 6, 7, and 8 are cloned/placed here for mobile stacking -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+            <div id="stats-section" class="pt-10">
+              <div id="stats-content-container">
+                <div class="stats-text">
+                  <h3
+                    class="font-montserrat font-semibold text-[#333333] text-[clamp(28px,4vw,43px)] tracking-[0] leading-tight mb-8"
+                  >
+                    The Real Stats Behind UK Home Services
+                  </h3>
+                  <p
+                    class="font-montserrat font-normal text-black text-[clamp(16px,2vw,22px)] tracking-[0] leading-normal opacity-80 max-w-[755px]"
+                  >
+                    Over **32%** of homeowners say hiring a trustworthy
+                    professional is harder than the actual renovation. Around
+                    **1 in 4** projects in the UK either get delayed or dropped
+                    completely just because people can't find the right help. We
+                    built this platform to finally close the gap between people
+                    who need home or commercial services and the experts who can
+                    actually get the job done.
+                  </p>
                 </div>
-            </article>
-        </div>
+
+                <div class="animated-images-block">
+                  <div id="layered-card-wrapper"></div>
+                  <div
+                    id="stacked-card-wrapper"
+                    class="block lg:hidden flex flex-col gap-6"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
     </section>
 
     <script>
-        // Mock data structure for the service cards (8 items)
-        const serviceCards = [
-            { id: 1, label: "Plumbing Services", image: "https://placehold.co/400x217/003f6b/ffffff?text=Plumbing" },
-            { id: 2, label: "Electrical Repairs", image: "https://placehold.co/400x217/007baf/ffffff?text=Electrical" },
-            { id: 3, label: "HVAC Installation", image: "https://placehold.co/400x217/3c8c7c/ffffff?text=HVAC" },
-            { id: 4, label: "Home Cleaning", image: "https://placehold.co/400x217/d4ac0d/ffffff?text=Cleaning" },
-            { id: 5, label: "Roofing & Guttering", image: "https://placehold.co/400x217/a93226/ffffff?text=Roofing" },
-            { id: 6, label: "Pest Control", image: "https://placehold.co/400x217/5b2c6f/ffffff?text=Pest+Control" },
-            { id: 7, label: "Landscape Design", image: "https://placehold.co/400x217/27ae60/ffffff?text=Landscape" },
-            { id: 8, label: "Interior Painting", image: "https://placehold.co/400x217/e67e22/ffffff?text=Painting" },
-        ];
-        
-        const animatedCardIds = [6, 7, 8];
+      // Mock data structure for the service cards (8 items)
+      const serviceCards = [
+        {
+          id: 1,
+          label: "Plumbing Services",
+          image: "https://placehold.co/400x217/003f6b/ffffff?text=Plumbing",
+        },
+        {
+          id: 2,
+          label: "Electrical Repairs",
+          image: "https://placehold.co/400x217/007baf/ffffff?text=Electrical",
+        },
+        {
+          id: 3,
+          label: "HVAC Installation",
+          image: "https://placehold.co/400x217/3c8c7c/ffffff?text=HVAC",
+        },
+        {
+          id: 4,
+          label: "Home Cleaning",
+          image: "https://placehold.co/400x217/d4ac0d/ffffff?text=Cleaning",
+        },
+        {
+          id: 5,
+          label: "Roofing & Guttering",
+          image: "https://placehold.co/400x217/a93226/ffffff?text=Roofing",
+        },
+        {
+          id: 6,
+          label: "Pest Control",
+          image: "https://placehold.co/400x217/5b2c6f/ffffff?text=Pest+Control",
+        },
+        {
+          id: 7,
+          label: "Landscape Design",
+          image: "https://placehold.co/400x217/27ae60/ffffff?text=Landscape",
+        },
+        {
+          id: 8,
+          label: "Interior Painting",
+          image: "https://placehold.co/400x217/e67e22/ffffff?text=Painting",
+        },
+      ];
 
-        // --- Core Functions ---
+      const animatedCardIds = [6, 7, 8];
 
-        /**
-         * Generates the HTML for a single service card.
-         * Added custom ID and dynamic classes for the animated cards (6, 7, 8).
-         */
-        function createCardHTML(service, delay) {
-            const isAnimated = animatedCardIds.includes(service.id);
-            // Initially hide the animated cards in the grid on desktop (opacity-0), 
-            // but keep them visible on mobile (lg:opacity-0)
-            const visibilityClass = isAnimated ? 'lg:opacity-0 lg:transition-opacity lg:duration-500' : '';
+      // --- Core Functions ---
 
-            return `
+      /**
+       * Generates the HTML for a single service card.
+       * Hides the last 3 cards from the grid on desktop initially (lg:opacity-0).
+       */
+      function createCardHTML(service, delay) {
+        const isAnimated = animatedCardIds.includes(service.id);
+        // Hide the animated cards in the grid on desktop initially, but keep them visible on mobile
+        const visibilityClass = isAnimated
+          ? "lg:opacity-0 lg:transition-opacity lg:duration-500"
+          : "";
+
+        return `
                 <div 
                     id="grid-card-${service.id}"
                     class="rounded-[13.33px] overflow-hidden border-0 shadow-none cursor-pointer hover:scale-105 transition-transform duration-300 ${visibilityClass}"
@@ -261,17 +310,17 @@
                     </div>
                 </div>
             `;
-        }
-        
-        /**
-         * Creates the card element for the animated/layered section.
-         */
-        function createAnimatedCardElement(service) {
-             const card = document.createElement('div');
-             card.id = `animated-card-${service.id}`;
-             // Uses the specific CSS classes for layering and animation
-             card.className = `animated-card card-${service.id}-moved`;
-             card.innerHTML = `
+      }
+
+      /**
+       * Creates the card element for the animated/layered section.
+       */
+      function createAnimatedCardElement(service) {
+        const card = document.createElement("div");
+        card.id = `animated-card-${service.id}`;
+        // Uses the specific CSS classes for layering and animation
+        card.className = `animated-card card-${service.id}-moved`;
+        card.innerHTML = `
                  <div class="p-0 relative w-full h-full">
                      <img
                          class="w-full h-full object-cover rounded-[13.33px]"
@@ -285,111 +334,136 @@
                      </div>
                  </div>
              `;
-             return card;
-        }
+        return card;
+      }
 
-        /**
-         * Renders all 8 service cards initially in the grid and clones the last 3 for the animated sections.
-         */
-        function initializeCards() {
-            const gridContainer = document.getElementById('service-grid');
-            const layeredWrapper = document.getElementById('layered-card-wrapper');
-            const stackedWrapper = document.getElementById('stacked-card-wrapper');
-            if (!gridContainer || !layeredWrapper || !stackedWrapper) return;
+      /**
+       * Renders all 8 service cards initially in the grid and clones the last 3 for the animated sections.
+       */
+      function initializeCards() {
+        const gridContainer = document.getElementById("service-grid");
+        const layeredWrapper = document.getElementById("layered-card-wrapper");
+        const stackedWrapper = document.getElementById("stacked-card-wrapper");
+        if (!gridContainer || !layeredWrapper || !stackedWrapper) return;
 
-            // 1. Render all 8 cards into the main grid
-            serviceCards.forEach((service, index) => {
-                const delay = 400 + index * 100;
-                gridContainer.insertAdjacentHTML('beforeend', createCardHTML(service, delay));
-            });
-            
-            // 2. Clone/render the last 3 cards into the animated wrappers
-            serviceCards.filter(s => animatedCardIds.includes(s.id)).forEach(service => {
-                const animatedCard = createAnimatedCardElement(service);
-                
-                // Clone for the mobile stacked view (needs relative positioning)
-                const stackedCard = animatedCard.cloneNode(true);
-                stackedCard.classList.remove('animated-card'); 
-                stackedCard.style.position = 'relative';
-                stackedCard.style.width = '100%'; 
-                stackedWrapper.appendChild(stackedCard);
-
-                // For the desktop layered view
-                layeredWrapper.appendChild(animatedCard);
-            });
-        }
-
-        /**
-         * Sets up the Intersection Observer to trigger the reflow and layering.
-         */
-        function setupScrollAnimation() {
-            const target = document.getElementById('stats-section');
-            const statsContentContainer = document.getElementById('stats-content-container');
-            const gridCardsToHide = animatedCardIds.map(id => document.getElementById(`grid-card-${id}`));
-
-            if (!target || !statsContentContainer) return;
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // 1. Trigger the Grid Reflow/Transition
-                        statsContentContainer.classList.add('in-view');
-                        
-                        // 2. Hide the original cards in the grid area (on desktop only)
-                        if (window.innerWidth >= 1024) {
-                            gridCardsToHide.forEach(card => {
-                                if (card) card.classList.add('opacity-0');
-                            });
-                        }
-                    } else {
-                        // Reverse the animation when scrolling away
-                        statsContentContainer.classList.remove('in-view');
-                        if (window.innerWidth >= 1024) {
-                            gridCardsToHide.forEach(card => {
-                                if (card) card.classList.remove('opacity-0');
-                            });
-                        }
-                    }
-                });
-            }, {
-                root: null, // viewport
-                threshold: 0.1 // Trigger when 10% of the target is visible
-            });
-
-            observer.observe(target);
-            
-             // Re-check visibility on resize for desktop/mobile transition
-            window.addEventListener('resize', () => {
-                if (window.innerWidth < 1024) {
-                     gridCardsToHide.forEach(card => {
-                        if (card) card.classList.remove('opacity-0');
-                    });
-                }
-            });
-        }
-
-        // --- Initialization ---
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // 1. Render all cards
-            initializeCards();
-
-            // 2. Set up the scroll-triggered element repositioning and layering
-            setupScrollAnimation();
-            
-            // 3. Apply the main fade-in animation
-            const content = document.getElementById('main-content');
-            if (content) {
-                const style = content.style.getPropertyValue('--animation-delay');
-                const delay = parseInt(style.replace('ms', ''), 10);
-                
-                setTimeout(() => {
-                    content.classList.remove('opacity-0', 'translate-y-[-1rem]');
-                    content.classList.add('animate-fade-in');
-                }, delay); 
-            }
+        // 1. Render all 8 cards into the main grid
+        serviceCards.forEach((service, index) => {
+          const delay = 400 + index * 100;
+          gridContainer.insertAdjacentHTML(
+            "beforeend",
+            createCardHTML(service, delay)
+          );
         });
-    </script>
 
-</body>
+        // 2. Clone/render the last 3 cards into the animated wrappers
+        serviceCards
+          .filter((s) => animatedCardIds.includes(s.id))
+          .forEach((service) => {
+            const animatedCard = createAnimatedCardElement(service);
+
+            // Clone for the mobile stacked view (needs relative positioning)
+            const stackedCard = animatedCard.cloneNode(true);
+            stackedCard.classList.remove("animated-card", "opacity-0");
+            stackedCard.style.position = "relative";
+            stackedCard.style.width = "100%";
+            stackedCard.style.transform = "none"; // Clear initial transform
+            stackedCard.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.1)"; // Add a subtle shadow
+            stackedWrapper.appendChild(stackedCard);
+
+            // For the desktop layered view
+            layeredWrapper.appendChild(animatedCard);
+          });
+      }
+
+      /**
+       * Sets up the Intersection Observer to trigger the reflow and layering.
+       */
+      function setupScrollAnimation() {
+        const target = document.getElementById("stats-section");
+        const statsContentContainer = document.getElementById(
+          "stats-content-container"
+        );
+        // Get the card elements in the main grid that we need to hide/show on desktop
+        const gridCardsToToggle = animatedCardIds.map((id) =>
+          document.getElementById(`grid-card-${id}`)
+        );
+
+        if (!target || !statsContentContainer) return;
+
+        const observer = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach((entry) => {
+              // Check if the screen is large (desktop)
+              const isDesktop = window.innerWidth >= 1024;
+
+              if (entry.isIntersecting) {
+                // When scrolling DOWN and the section enters view:
+
+                // 1. Trigger the Grid Reflow/Transition (Desktop only behavior in CSS)
+                statsContentContainer.classList.add("in-view");
+
+                // 2. Hide the original cards in the grid area
+                if (isDesktop) {
+                  gridCardsToToggle.forEach((card) => {
+                    if (card) card.classList.add("opacity-0");
+                  });
+                }
+              } else if (entry.boundingClientRect.top > 0) {
+                // When scrolling UP and the section leaves the view (above the viewport):
+
+                // 1. Reverse the Grid Reflow/Transition
+                statsContentContainer.classList.remove("in-view");
+
+                // 2. Show the original cards back in the grid area
+                if (isDesktop) {
+                  gridCardsToToggle.forEach((card) => {
+                    if (card) card.classList.remove("opacity-0");
+                  });
+                }
+              }
+            });
+          },
+          {
+            root: null, // viewport
+            threshold: 0.1, // Trigger when 10% of the target is visible
+          }
+        );
+
+        observer.observe(target);
+
+        // Re-check visibility on resize to ensure cards reappear in the grid on mobile
+        window.addEventListener("resize", () => {
+          const isDesktop = window.innerWidth >= 1024;
+          if (!isDesktop) {
+            // Always show the grid cards on mobile
+            gridCardsToToggle.forEach((card) => {
+              if (card) card.classList.remove("opacity-0");
+            });
+          }
+        });
+      }
+
+      // --- Initialization ---
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // 1. Render all cards
+        initializeCards();
+
+        // 2. Set up the scroll-triggered element repositioning and layering
+        setupScrollAnimation();
+
+        // 3. Apply the main fade-in animation
+        const content = document.getElementById("main-content");
+        if (content) {
+          const style = content.style.getPropertyValue("--animation-delay");
+          const delay = parseInt(style.replace("ms", ""), 10);
+
+          setTimeout(() => {
+            content.classList.remove("opacity-0", "translate-y-[-1rem]");
+            content.classList.add("animate-fade-in");
+          }, delay);
+        }
+      });
+    </script>
+  </body>
 </html>
