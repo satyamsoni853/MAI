@@ -51,6 +51,53 @@
         background-color: #333333; /* Dark gray color for separator */
         opacity: 0.3; /* Slight transparency */
       }
+
+      /* Tooltip styles */
+      .tooltip-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .tooltip-text {
+        visibility: hidden;
+        background-color: #003f6b;
+        color: white;
+        text-align: center;
+        padding: 8px 16px;
+        border-radius: 8px;
+        position: absolute;
+        z-index: 1000;
+        /* Position to the right of the icon */
+        left: calc(100% + 10px);
+        top: 50%;
+        /* Initial state for transition */
+        transform: translateY(-50%) translateX(-10px);
+        white-space: nowrap;
+        opacity: 0;
+        transition: all 0.3s ease;
+        font-size: 13px;
+        font-family: "Montserrat", sans-serif;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        font-weight: 500;
+      }
+
+      .tooltip-text::before {
+        content: "";
+        position: absolute;
+        right: 100%;
+        top: 50%;
+        margin-top: -6px;
+        border-width: 6px;
+        border-style: solid;
+        border-color: transparent #003f6b transparent transparent;
+      }
+
+      .tooltip-container:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+        /* Final state for transition */
+        transform: translateY(-50%) translateX(0);
+      }
     </style>
   </head>
   <body>
@@ -82,8 +129,7 @@
           </div>
         </div>
 
-        <div class="flex items-center gap-4">
-          <div
+        <div class="flex items-center gap-4 **mx-auto**"> <div
             class="inline-flex items-center gap-5 px-5 py-[7px] rounded-[10px] bg-white hidden lg:flex"
           >
             <div
@@ -93,35 +139,43 @@
             </div>
 
             <div class="inline-flex items-center gap-[10.29px]">
-              <img
-                class="h-[35px]"
-                alt="Contact phone"
-                src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324983.svg"
-              />
+              <div class="tooltip-container">
+                <img
+                  class="h-[35px] cursor-pointer"
+                  alt="Contact phone"
+                  src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324983.svg"
+                />
+                <span class="tooltip-text">Book Demo</span> 
+              </div>
 
-              <img
-                class="h-[35px]"
-                alt="Contact email"
-                src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324984.svg"
-              />
+              <div class="tooltip-container">
+                <img
+                  class="h-[35px] cursor-pointer"
+                  alt="Contact email"
+                  src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324984.svg"
+                />
+                <span class="tooltip-text">Contact Us</span>
+              </div>
             </div>
           </div>
-
-          <button
-            class="inline-flex items-center gap-2.5 pl-2.5 pr-[30px] py-2 h-auto bg-[#ffffff33] hover:bg-[#ffffff4d] rounded-[50px] transition-colors"
-          >
-            <img
-              class="w-[34px] h-[34px]"
-              alt="User icon"
-              src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324077.svg"
-            />
-
-            <span
-              class="font-montserrat font-medium text-white text-[15px] tracking-[0] leading-normal whitespace-nowrap"
+        </div>
+        
+        <div class="flex items-center gap-4 **ml-auto**"> 
+            <button
+                class="inline-flex items-center gap-2.5 pl-2.5 pr-[30px] py-2 h-auto bg-[#ffffff33] hover:bg-[#ffffff4d] rounded-[50px] transition-colors"
             >
-              Sign In
-            </span>
-          </button>
+                <img
+                class="w-[34px] h-[34px]"
+                alt="User icon"
+                src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324077.svg"
+                />
+
+                <span
+                class="font-montserrat font-medium text-white text-[15px] tracking-[0] leading-normal whitespace-nowrap"
+                >
+                Sign In
+                </span>
+            </button>
         </div>
       </div>
 
@@ -210,17 +264,17 @@
         actionItems.forEach((item, index) => {
           // Button
           const buttonHTML = `
-                    <button class="inline-flex items-center gap-2.5 bg-transparent border-none cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0">
-                        <img
-                            class="w-[30px] h-[30px]"
-                            alt="${item.label}"
-                            src="${item.icon}"
-                        />
-                        <span class="font-montserrat font-medium text-[#003f6b] text-[17px] tracking-[0] leading-normal whitespace-nowrap">
-                            ${item.label}
-                        </span>
-                    </button>
-                `;
+                            <button class="inline-flex items-center gap-2.5 bg-transparent border-none cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0">
+                                <img
+                                    class="w-[30px] h-[30px]"
+                                    alt="${item.label}"
+                                    src="${item.icon}"
+                                />
+                                <span class="font-montserrat font-medium text-[#003f6b] text-[17px] tracking-[0] leading-normal whitespace-nowrap">
+                                    ${item.label}
+                                </span>
+                            </button>
+                        `;
           container.insertAdjacentHTML("beforeend", buttonHTML);
 
           // Separator (for all but the last item)
