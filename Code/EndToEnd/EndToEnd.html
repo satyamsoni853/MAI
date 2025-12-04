@@ -38,10 +38,8 @@
         background-color: rgba(0, 0, 0, 0.2);
         backdrop-filter: blur(16px) brightness(110%);
         -webkit-backdrop-filter: blur(16px) brightness(110%);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4),
-          inset 1px 0 0 rgba(255, 255, 255, 0.32),
-          inset 0 -1px 1px rgba(0, 0, 0, 0.13),
-          inset -1px 0 1px rgba(0, 0, 0, 0.11);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 1px 0 0 rgba(255, 255, 255, 0.32),
+          inset 0 -1px 1px rgba(0, 0, 0, 0.13), inset -1px 0 1px rgba(0, 0, 0, 0.11);
       }
 
       /* ---------------------------------------------------- */
@@ -135,6 +133,12 @@
         overflow: hidden;
       }
 
+      /* Hide labels (Interior Painting, etc.) on animated cards in the layered view */
+      .animated-card .backdrop-blur-custom,
+      #layered-card-wrapper .backdrop-blur-custom {
+        display: none !important;
+      }
+
       /* Layered positions on desktop when IN VIEW */
       @media (min-width: 1024px) {
         /* Card 6: Back layer, scaled down, offset top-left */
@@ -160,7 +164,7 @@
       }
     </style>
   </head>
-  <body class=" overflow-x-hidden">
+  <body class="overflow-x-hidden">
     <section class="w-full relative">
       <div
         id="main-content"
@@ -190,10 +194,7 @@
               </button>
             </div>
 
-            <div
-              id="service-grid"
-              class="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-16"
-            ></div>
+            <div id="service-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-16"></div>
 
             <div id="stats-section" class="pt-10">
               <div id="stats-content-container">
@@ -201,27 +202,23 @@
                   <h3
                     class="font-montserrat font-semibold text-[#333333] text-[clamp(28px,4vw,43px)] tracking-[0] leading-tight mb-8"
                   >
-                    The Real Stats Behind UK Home <br> Services
+                    The Real Stats Behind UK Home <br />
+                    Services
                   </h3>
                   <p
                     class="font-montserrat font-normal text-black text-[clamp(20px,2vw,25px)] tracking-[0] leading-normal opacity-80 max-w-[755px]"
                   >
-                    Over **32%** of homeowners say hiring a trustworthy
-                    professional is harder than the actual renovation. Around
-                    **1 in 4** projects in the UK either get delayed or dropped
-                    completely just because people can't find the right help. We
-                    built this platform to finally close the gap between people
-                    who need home or commercial services and the experts who can
-                    actually get the job done.
+                    Over **32%** of homeowners say hiring a trustworthy professional is harder than
+                    the actual renovation. Around **1 in 4** projects in the UK either get delayed
+                    or dropped completely just because people can't find the right help. We built
+                    this platform to finally close the gap between people who need home or
+                    commercial services and the experts who can actually get the job done.
                   </p>
                 </div>
 
                 <div class="animated-images-block">
                   <div id="layered-card-wrapper"></div>
-                  <div
-                    id="stacked-card-wrapper"
-                    class="block lg:hidden flex flex-col gap-6"
-                  ></div>
+                  <div id="stacked-card-wrapper" class="block lg:hidden flex flex-col gap-6"></div>
                 </div>
               </div>
             </div>
@@ -286,9 +283,7 @@
       function createCardHTML(service, delay) {
         const isAnimated = animatedCardIds.includes(service.id);
         // Add transition class for smooth fade out when scrolling
-        const transitionClass = isAnimated
-          ? "lg:transition-opacity lg:duration-700"
-          : "";
+        const transitionClass = isAnimated ? "lg:transition-opacity lg:duration-700" : "";
 
         return `
                 <div 
@@ -349,10 +344,7 @@
         // 1. Render all 8 cards into the main grid
         serviceCards.forEach((service, index) => {
           const delay = 400 + index * 100;
-          gridContainer.insertAdjacentHTML(
-            "beforeend",
-            createCardHTML(service, delay)
-          );
+          gridContainer.insertAdjacentHTML("beforeend", createCardHTML(service, delay));
         });
 
         // 2. Clone/render the last 3 cards into the animated wrappers
@@ -380,9 +372,7 @@
        */
       function setupScrollAnimation() {
         const target = document.getElementById("stats-section");
-        const statsContentContainer = document.getElementById(
-          "stats-content-container"
-        );
+        const statsContentContainer = document.getElementById("stats-content-container");
         // Get the card elements in the main grid that we need to hide/show on desktop
         const gridCardsToToggle = animatedCardIds.map((id) =>
           document.getElementById(`grid-card-${id}`)
