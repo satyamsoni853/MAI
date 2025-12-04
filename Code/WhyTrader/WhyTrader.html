@@ -72,26 +72,37 @@
             position: relative;
             flex-shrink: 0;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-            /* Include transform in transition for smooth staggering and content updates */
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease; 
             opacity: 1;
         }
         
-        /* Class for the fade effect during content change */
-        .trader-card.fade {
-            opacity: 0; 
-        }
-        
-        .trader-card img {
+        /* Image container for swipe effect */
+        .trader-card .card-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .trader-card:hover img {
+        
+        /* Swipe animation classes */
+        .trader-card.swipe-out-left .card-img {
+            transform: translateX(-100%);
+        }
+        
+        .trader-card.swipe-out-right .card-img {
+            transform: translateX(100%);
+        }
+        
+        .trader-card.swipe-in-left .card-img {
+            transform: translateX(0);
+        }
+        
+        .trader-card.swipe-in-right .card-img {
+            transform: translateX(0);
+        }
+        
+        .trader-card:hover .card-img {
             transform: scale(1.08);
         }
-
         .overlay {
             position: absolute;
             bottom: 0;
@@ -241,18 +252,21 @@
     </section>
 
     <script>
-        // === TRADER DATA (Includes the position property for staggering) ===
+        // === TRADER DATA (No position property - positions are fixed by card index) ===
         const tradersData = [
-            { name: "Robert Fox", location: "Birmingham", img: "../../Task Images/Fifth Section/construction-industry-workers-1.png", position: "lower-card" },
-            { name: "Marvin McKinney", location: "Greater London", img: "../../Task Images/Fifth Section/construction-industry-workers.png", position: "upper-card" },
-            { name: "Guy Hawkins", location: "Birmingham", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building-1.png", position: "middle-card" },
-            { name: "Jane Cooper", location: "Greater London", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building.png", position: "upper-card" },
-            { name: "Ronald Richards", location: "Birmingham", img: "../../Task Images/Fifth Section/male-construction-worker-standing-with-safty-hat-hand-crossed.png", position: "lower-card" },
-            { name: "Esther Howard", location: "Manchester", img: "../../Task Images/Fifth Section/construction-industry-workers-1.png", position: "middle-card" },
-            { name: "Cameron Williamson", location: "Leeds", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building.png", position: "upper-card" },
-            { name: "Brooklyn Simmons", location: "Liverpool", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building-1.png", position: "lower-card" },
-            { name: "Another Trader", location: "Coventry", img: "../../Task Images/Fifth Section/construction-industry-workers.png", position: "middle-card" },
+            { name: "Robert Fox", location: "Birmingham", img: "../../Task Images/Fifth Section/construction-industry-workers-1.png" },
+            { name: "Marvin McKinney", location: "Greater London", img: "../../Task Images/Fifth Section/construction-industry-workers.png" },
+            { name: "Guy Hawkins", location: "Birmingham", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building-1.png" },
+            { name: "Jane Cooper", location: "Greater London", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building.png" },
+            { name: "Ronald Richards", location: "Birmingham", img: "../../Task Images/Fifth Section/male-construction-worker-standing-with-safty-hat-hand-crossed.png" },
+            { name: "Esther Howard", location: "Manchester", img: "../../Task Images/Fifth Section/construction-industry-workers-1.png" },
+            { name: "Cameron Williamson", location: "Leeds", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building.png" },
+            { name: "Brooklyn Simmons", location: "Liverpool", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building-1.png" },
+            { name: "Another Trader", location: "Coventry", img: "../../Task Images/Fifth Section/construction-industry-workers.png" },
         ];
+        
+        // Fixed position pattern for the 5 cards (never changes)
+        const cardPositions = ['lower-card', 'upper-card', 'middle-card', 'upper-card', 'lower-card'];
 
         // === JavaScript Logic: Keeps Card Position, Only Changes Content ===
         document.addEventListener('DOMContentLoaded', () => {
@@ -263,10 +277,11 @@
             const VISIBLE_CARDS = 5; 
             let startIndex = 0; 
 
-            // 1. Initial Card Element Creation (Creates 5 visible cards)
+            // 1. Initial Card Element Creation (Creates 5 visible cards with fixed positions)
             for (let i = 0; i < VISIBLE_CARDS; i++) {
                 const card = document.createElement('div');
-                card.className = `trader-card card-${i}`; 
+                // Apply fixed position class that never changes
+                card.className = `trader-card card-${i} ${cardPositions[i]}`; 
                 card.innerHTML = `
                     <img class="card-img" src="" alt="">
                     <div class="overlay">
@@ -280,17 +295,23 @@
             const cardElements = Array.from(track.children);
 
 
-            // 2. Function to update the content of the 5 visible cards
-            const updateCardContent = (newStartIndex) => {
+            // 2. Function to update the content of the 5 visible cards with swipe effect
+            const updateCardContent = (newStartIndex, direction) => {
                 // Bounds check
                 if (newStartIndex < 0 || newStartIndex > tradersData.length - VISIBLE_CARDS) {
                     return; 
                 }
 
-                // Fade out the current content
-                cardElements.forEach(card => card.classList.add('fade'));
+                // Determine swipe direction
+                const swipeOutClass = direction === 'next' ? 'swipe-out-left' : 'swipe-out-right';
+                
+                // Apply swipe out animation to all cards
+                cardElements.forEach(card => {
+                    card.classList.add(swipeOutClass);
+                });
 
                 setTimeout(() => {
+                    // Update content while images are off-screen
                     for (let i = 0; i < VISIBLE_CARDS; i++) {
                         const dataIndex = newStartIndex + i;
                         const data = tradersData[dataIndex];
@@ -301,17 +322,26 @@
                         card.querySelector('.card-name').textContent = data.name;
                         card.querySelector('.card-location').textContent = data.location;
                         
-                        // *** Re-apply the trader-card base class and the position class ***
-                        // This maintains the original vertical offset (staggering)
-                        card.className = `trader-card card-${i} ${data.position}`; 
+                        // Reset image position to opposite side for swipe in
+                        const img = card.querySelector('.card-img');
+                        img.style.transform = direction === 'next' ? 'translateX(100%)' : 'translateX(-100%)';
+                        
+                        // Keep the fixed position class - DON'T change card alignment
+                        card.className = `trader-card card-${i} ${cardPositions[i]}`; 
                     }
                     
-                    // Fade in the new content
-                    cardElements.forEach(card => card.classList.remove('fade'));
+                    // Small delay to ensure transform is applied
+                    setTimeout(() => {
+                        // Swipe in the new images
+                        cardElements.forEach(card => {
+                            const img = card.querySelector('.card-img');
+                            img.style.transform = 'translateX(0)';
+                        });
+                    }, 50);
 
                     startIndex = newStartIndex;
                     updateButtons();
-                }, 300); // 300ms delay matches the CSS transition time for a smooth fade effect
+                }, 500); // Match the CSS transition duration
             };
 
             // 3. Update Buttons function (Disables arrows when limits are reached)
@@ -323,18 +353,32 @@
             // 4. Navigation Button Handlers
             nextBtn.addEventListener('click', () => {
                 if (startIndex < tradersData.length - VISIBLE_CARDS) {
-                    updateCardContent(startIndex + 1); 
+                    updateCardContent(startIndex + 1, 'next'); 
                 }
             });
 
             prevBtn.addEventListener('click', () => {
                 if (startIndex > 0) {
-                    updateCardContent(startIndex - 1);
+                    updateCardContent(startIndex - 1, 'prev');
                 }
             });
 
-            // Initial load of the first 5 cards
-            updateCardContent(startIndex);
+            // Initial load of the first 5 cards (no animation on first load)
+            const initialLoad = () => {
+                for (let i = 0; i < VISIBLE_CARDS; i++) {
+                    const dataIndex = startIndex + i;
+                    const data = tradersData[dataIndex];
+                    const card = cardElements[i];
+
+                    card.querySelector('.card-img').src = data.img;
+                    card.querySelector('.card-name').textContent = data.name;
+                    card.querySelector('.card-location').textContent = data.location;
+                    // Position is already set during card creation, no need to change it
+                }
+                updateButtons();
+            };
+            
+            initialLoad();
         });
     </script>
 </body>
