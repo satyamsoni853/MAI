@@ -138,6 +138,8 @@
 
         .nav-buttons {
             display: flex;
+            position: relative;
+            top: -100px;
             justify-content: center;
             gap: 20px;
             margin: 40px 0 80px;
@@ -175,6 +177,8 @@
         .btn-primary {
             display: inline-block;
             background: #0d47a1;
+            position: relative;
+            top: -100px;
             color: white;
             padding: 20px 50px;
             border-radius: 20px;
@@ -254,15 +258,15 @@
     <script>
         // === TRADER DATA (No position property - positions are fixed by card index) ===
         const tradersData = [
-            { name: "Robert Fox", location: "Birmingham", img: "../../Task Images/Fifth Section/construction-industry-workers-1.png" },
-            { name: "Marvin McKinney", location: "Greater London", img: "../../Task Images/Fifth Section/construction-industry-workers.png" },
-            { name: "Guy Hawkins", location: "Birmingham", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building-1.png" },
-            { name: "Jane Cooper", location: "Greater London", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building.png" },
-            { name: "Ronald Richards", location: "Birmingham", img: "../../Task Images/Fifth Section/male-construction-worker-standing-with-safty-hat-hand-crossed.png" },
-            { name: "Esther Howard", location: "Manchester", img: "../../Task Images/Fifth Section/construction-industry-workers-1.png" },
-            { name: "Cameron Williamson", location: "Leeds", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building.png" },
-            { name: "Brooklyn Simmons", location: "Liverpool", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building-1.png" },
-            { name: "Another Trader", location: "Coventry", img: "../../Task Images/Fifth Section/construction-industry-workers.png" },
+            { name: "Robert Fox", location: "Birmingham", img: "../../Task%20Images/Fifth%20Section/construction-industry-workers-1.png" },
+            { name: "Marvin McKinney", location: "Greater London", img: "../../Task%20Images/Fifth%20Section/construction-industry-workers.png" },
+            { name: "Guy Hawkins", location: "Birmingham", img: "../../Task%20Images/Fifth%20Section/handsome-business-man-engineer-hard-hat-building-1.png" },
+            { name: "Jane Cooper", location: "Greater London", img: "../../Task%20Images/Fifth%20Section/handsome-business-man-engineer-hard-hat-building.png" },
+            { name: "Ronald Richards", location: "Birmingham", img: "../../Task%20Images/Fifth%20Section/male-construction-worker-standing-with-safty-hat-hand-crossed.png" },
+            { name: "Esther Howard", location: "Manchester", img: "../../Task%20Images/Fifth%20Section/construction-industry-workers-1.png" },
+            { name: "Cameron Williamson", location: "Leeds", img: "../../Task%20Images/Fifth%20Section/handsome-business-man-engineer-hard-hat-building.png" },
+            { name: "Brooklyn Simmons", location: "Liverpool", img: "../../Task%20Images/Fifth%20Section/handsome-business-man-engineer-hard-hat-building-1.png" },
+            { name: "Another Trader", location: "Coventry", img: "../../Task%20Images/Fifth%20Section/construction-industry-workers.png" },
         ];
         
         // Fixed position pattern for the 5 cards (never changes)
