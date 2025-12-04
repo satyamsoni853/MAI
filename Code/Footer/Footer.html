@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAI Footer Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Define the custom primary color used in the original component */
+        :root {
+            --mai-primary-color: #003f6b; /* Assuming a dark blue based on common branding practices */
+        }
+
+        /* Custom Keyframes for Fade-in Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-1rem); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Apply the fade-in animation class */
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        /* Utility classes for styling consistency */
+        .font-montserrat {
+            font-family: 'Montserrat', Helvetica, sans-serif;
+        }
+        
+        /* Utility to target the custom color */
+        .text-mai-primary-color {
+            color: var(--mai-primary-color);
+        }
+        .hover\:text-mai-primary-color:hover {
+            color: var(--mai-primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <footer 
+        id="main-footer"
+        class="flex flex-col w-full items-center justify-center gap-[71px] pt-[50px] pb-[30px] px-4 md:px-[100px] bg-neutral-100 rounded-[30px_30px_0px_0px]"
+    >
+        <div class="flex flex-col w-full max-w-[1720px] items-start gap-[30px]">
+            
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-8">
+                
+                <div 
+                    id="logo-block"
+                    class="relative w-[101.33px] h-[58.03px] opacity-0 translate-y-[-1rem]"
+                    style="--animation-delay:0ms;"
+                >
+                    <div class="relative w-full h-[58px] flex">
+                        <div class="w-[105.33px] h-[58.27px] relative">
+                            <div class="absolute top-0 left-0 [text-shadow:0.85px_0.85px_2.12px_#0000004c] font-montserrat font-black text-mai-primary-color text-[46.3px] tracking-[0] leading-normal">
+                                MAI
+                            </div>
+
+                            <div class="absolute top-12 left-[3px] [text-shadow:0px_0.15px_0.15px_#00000040] font-montserrat font-medium text-mai-primary-color text-[8px] tracking-[0] leading-normal">
+                                W e&nbsp;&nbsp;B u i l d&nbsp;&nbsp;H o m e s
+                            </div>
+
+                            <img
+                                class="absolute w-[6.63%] h-[11.98%] top-[10.55%] left-[89.57%]"
+                                alt="Copyright and"
+                                src="https://c.animaapp.com/mir55x8iWdeMxx/img/copyright-and-protecttion-2--streamline-ultimate.svg"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <nav 
+                    id="nav-links"
+                    class="inline-flex flex-wrap items-center justify-start md:justify-center gap-6 md:gap-[50px] opacity-0 translate-y-[-1rem]"
+                    style="--animation-delay:200ms;"
+                >
+                    </nav>
+
+                <div 
+                    id="social-icons"
+                    class="opacity-0 translate-y-[-1rem]"
+                    style="--animation-delay:400ms;"
+                >
+                    <img
+                        class="relative w-[111.7px]"
+                        alt="Social media icons"
+                        src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-148.svg"
+                    />
+                </div>
+            </div>
+            
+            <div 
+                id="bottom-row"
+                class="flex flex-col md:flex-row items-start md:items-center justify-between pt-[26.67px] w-full border-t-[1.33px] border-[#2222224c] opacity-0 translate-y-[-1rem]"
+                style="--animation-delay:600ms;"
+            >
+                <div class="flex items-start gap-1 mb-4 md:mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-black flex-shrink-0 mt-0.5">
+                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <p class="font-montserrat font-normal text-black text-[17px] tracking-[0] leading-normal">
+                        MAI Corporation Ltd , 1 De La Warr Way Cambourne, Cambridge, CB23 6DX
+                    </p>
+                </div>
+
+                <p class="font-montserrat font-normal text-black text-sm tracking-[0] leading-normal">
+                    © Copyright Myproject.Ai All Rights Reserved
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const navigationLinks = [
+            "About Us",
+            "Contact Us",
+            "Careers",
+            "FAQ",
+            "CSR",
+            "Terms & Conditions",
+            // The original JSX had "Terms & Conditions" duplicated, keeping for fidelity.
+            "Terms & Conditions",
+        ];
+
+        /**
+         * Renders the navigation links into the <nav> element.
+         */
+        function renderNavigation() {
+            const navElement = document.getElementById('nav-links');
+            if (!navElement) return;
+
+            navElement.innerHTML = navigationLinks.map((link, index) => `
+                <a
+                    key="${index}"
+                    href="#"
+                    class="relative w-fit mt-[-1.33px] font-montserrat font-normal text-black text-[17px] tracking-[0] leading-normal hover:text-mai-primary-color transition-colors whitespace-nowrap"
+                >
+                    ${link}
+                </a>
+            `).join('');
+        }
+
+        /**
+         * Applies the fade-in animation to elements with delayed timing.
+         */
+        function applyAnimations() {
+            const animatedElements = [
+                'logo-block',
+                'nav-links',
+                'social-icons',
+                'bottom-row'
+            ];
+
+            animatedElements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    const delayStyle = element.style.getPropertyValue('--animation-delay');
+                    const delay = parseInt(delayStyle.replace('ms', ''), 10);
+                    
+                    setTimeout(() => {
+                        element.classList.remove('opacity-0', 'translate-y-[-1rem]');
+                        element.classList.add('animate-fade-in');
+                    }, delay);
+                }
+            });
+        }
+
+        // Initialize the page components
+        document.addEventListener('DOMContentLoaded', () => {
+            renderNavigation();
+            applyAnimations();
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latest Blog Section - Staggered Grid Layout (No Numbers)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Custom styles based on component requirements */
+      :root {
+        --header-gap: 53.33px;
+        /* Define standard card heights for CSS calculations */
+        --short-card-height: 350px;
+        --tall-card-height: 520px;
+        --card-gap: 20px; /* Assuming 20px gap for simpler calc */
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f7f9fb;
+      }
+
+      /* Define keyframes for the custom animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-1rem);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Apply the custom animation */
+      .animate-fade-in-custom {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
+
+      .font-montserrat {
+        font-family: "Montserrat", Helvetica, sans-serif;
+      }
+
+      /* Custom gradient overlay for card content visibility */
+      .gradient-overlay-blue {
+        background-image: linear-gradient(
+          180deg,
+          rgba(0, 123, 209, 0) 0%,
+          rgba(0, 63, 107, 1) 100%
+        );
+      }
+      .gradient-overlay-dark {
+        background-image: linear-gradient(
+          180deg,
+          rgba(51, 51, 51, 0) 0%,
+          rgba(51, 51, 51, 1) 100%
+        );
+      }
+
+      /* Custom widths/heights based on the original values, adapted for responsiveness */
+      .custom-gap {
+        gap: var(--header-gap);
+      }
+      .custom-max-w {
+        max-width: 1720px;
+      }
+
+      /* Fix for absolute positioning to be relative to the parent */
+      .blog-card-container {
+        position: relative;
+        /* Set a height that accommodates the tallest card plus a row gap */
+        height: calc(var(--tall-card-height) * 2 + var(--card-gap));
+        max-height: calc(var(--tall-card-height) * 2 + var(--card-gap));
+      }
+
+      /* Ensure responsive font sizes */
+      .h2-title {
+        font-size: clamp(28px, 4vw, 43px);
+      }
+      .p-desc {
+        font-size: clamp(16px, 2vw, 22px);
+      }
+
+      /* --- HOVER EFFECT CSS --- */
+      .blog-card-container > div:hover .blog-details {
+        opacity: 1;
+      }
+      .blog-card-container > div .gradient-overlay-dark {
+        opacity: 0.8;
+        transition: opacity 0.3s ease-in-out;
+      }
+      .blog-card-container > div:hover .gradient-overlay-dark {
+        opacity: 0.95;
+      }
+      .blog-card-container > div:hover {
+        transform: none !important;
+      }
+
+      /* Removed .card-number CSS as requested */
+    </style>
+  </head>
+  <body>
+    <article
+      id="blog-section"
+      class="w-full custom-max-w mx-auto px-4 translate-y-[-1rem] opacity-0 animate-fade-in-custom pt-16 pb-16"
+      style="--animation-delay: 800ms"
+    >
+      <div class="flex flex-col items-center custom-gap">
+        <header
+          class="flex flex-col md:flex-row items-start md:items-end justify-between w-full gap-8"
+        >
+          <div class="inline-flex flex-col items-start gap-4">
+            <h2
+              class="font-montserrat font-semibold text-[#222222] h2-title tracking-[0] leading-tight"
+            >
+              Latest BLOG
+            </h2>
+            <p
+              class="font-montserrat font-normal text-black p-desc tracking-[0] leading-normal max-w-full md:max-w-[1304px]"
+            >
+              Explore MAI's expert blogs for valuable insights, practical tips,
+              and the latest industry updates. Our articles cover a range of
+              topics to help you stay informed and make informed decisions. Dive
+              into expert advice and stay ahead in the industry with our
+              engaging and informative content.
+            </p>
+          </div>
+          <button
+            class="flex-shrink-0 h-auto w-full md:w-[333.33px] bg-[#003f6b] rounded-[13.33px] border-[1.04px] border-solid border-[#003f6b] shadow-[0px_4px_4px_#00000040] px-4 py-3 md:py-[13.33px] hover:bg-[#003f6b]/90 transition-colors"
+          >
+            <span
+              class="font-montserrat font-semibold text-neutral-100 text-[22px] tracking-[0] leading-normal"
+            >
+              View All Blogs
+            </span>
+          </button>
+        </header>
+
+        <div class="flex flex-col items-center gap-10 w-full">
+          <div id="blog-cards-container" class="blog-card-container w-full">
+            <div class="text-center p-10 text-gray-500">
+              Loading blog posts...
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <script>
+      // ----------------------------------------------------------------------------------
+      // --- IMPORTANT: HEIGHT AND POSITIONING LOGIC FOR STAGGERED LAYOUT ---
+      // ----------------------------------------------------------------------------------
+      const SHORT_H = 350; // h-[350px]
+      const TALL_H = 520; // New taller height
+      const GAP_H = 20; // Gap between rows (20px)
+
+      const blogPosts = [
+        // --- ROW 1 ---
+        {
+          title:
+            "The Future of AI in Financial Planning and Investment Strategies",
+          price: "Reading Time: 5 min",
+          location: "May 15, 2024",
+          image: "../../Sixth Section/beautiful-interior-design.png",
+          // Card 1: TALL (Height 520px)
+          heightClass: "h-[520px]",
+          topClass: "top-0",
+          leftClass: "left-0",
+          widthClass: "w-full md:w-[32.5%]",
+          titleSize: "text-2xl md:text-[28px] leading-tight",
+          priceSize: "text-lg md:text-[20px]",
+          locationSize: "text-base md:text-[16px]",
+          overlayBottom: "bottom-0",
+          overlayWidth: "w-full",
+          overlayHeight: "h-[60%]",
+          contentTop: "bottom-[50px]",
+          nameWidth: "max-w-full",
+        },
+        {
+          title: "Understanding Market Volatility and Risk Mitigation",
+          price: "Reading Time: 3 min",
+          location: "April 28, 2024",
+          image:
+            "../../Sixth Section/cosmetics-product-advertising-stand-exhibition-wooden-podium-green-background-with-leaves-sha.png",
+          // Card 2: SHORT (Height 350px)
+          heightClass: "h-[350px]",
+          topClass: "top-[540px] md:top-0",
+          leftClass: "left-0 md:left-[33.75%]",
+          widthClass: "w-full md:w-[32.5%]",
+          titleSize: "text-2xl md:text-[28px] leading-tight",
+          priceSize: "text-lg md:text-[20px]",
+          locationSize: "text-base md:text-[16px]",
+          overlayBottom: "bottom-0",
+          overlayWidth: "w-full",
+          overlayHeight: "h-[60%]",
+          contentTop: "bottom-[50px]",
+          nameWidth: "max-w-full",
+        },
+        {
+          title: "Navigating Retirement Savings: A Step-by-Step Guide",
+          price: "Reading Time: 7 min",
+          location: "March 10, 2024",
+          image: "../../Sixth Section/high-detailed-picture-modern-interior-design.png",
+          // Card 3: TALL (Height 520px)
+          heightClass: "h-[520px]",
+          topClass: "top-[910px] md:top-0",
+          leftClass: "left-0 md:left-[67.5%]",
+          widthClass: "w-full md:w-[32.5%]",
+          titleSize: "text-2xl md:text-[28px] leading-tight",
+          priceSize: "text-lg md:text-[20px]",
+          locationSize: "text-base md:text-[16px]",
+          overlayBottom: "bottom-0",
+          overlayWidth: "w-full",
+          overlayHeight: "h-[60%]",
+          contentTop: "bottom-[50px]",
+          nameWidth: "max-w-full",
+        },
+
+        // --- ROW 2 ---
+        {
+          title:
+            "Tax-Efficient Investment Strategies for High Net Worth Individuals",
+          price: "Reading Time: 4 min",
+          location: "February 20, 2024",
+          image: "../../Sixth Section/minimalist-decor-ambient-lighting.png",
+          // Card 4: SHORT (Height 350px). Starts after the TALL Card 1.
+          heightClass: "h-[350px]",
+          topClass: "top-[1440px] md:top-[calc(520px+20px)]",
+          leftClass: "left-0",
+          widthClass: "w-full md:w-[32.5%]",
+          titleSize: "text-2xl md:text-[28px] leading-tight",
+          priceSize: "text-lg md:text-[20px]",
+          locationSize: "text-base md:text-[16px]",
+          overlayBottom: "bottom-0",
+          overlayWidth: "w-full",
+          overlayHeight: "h-[60%]",
+          contentTop: "bottom-[50px]",
+          nameWidth: "max-w-full",
+        },
+        {
+          title: "The Role of ESG Criteria in Modern Portfolio Management",
+          price: "Reading Time: 6 min",
+          location: "January 5, 2024",
+          image:
+            "../../Sixth Section/modern-apartment-with-ecofriendly-features-energyefficient-systems.png",
+          // Card 5: TALL (Height 520px). Starts after the SHORT Card 2.
+          heightClass: "h-[520px]",
+          topClass: "top-[1810px] md:top-[calc(350px+20px)]",
+          leftClass: "left-0 md:left-[33.75%]",
+          widthClass: "w-full md:w-[32.5%]",
+          titleSize: "text-2xl md:text-[28px] leading-tight",
+          priceSize: "text-lg md:text-[20px]",
+          locationSize: "text-base md:text-[16px]",
+          overlayBottom: "bottom-0",
+          overlayWidth: "w-full",
+          overlayHeight: "h-[60%]",
+          contentTop: "bottom-[50px]",
+          nameWidth: "max-w-full",
+        },
+        {
+          title:
+            "Future of Decentralized Finance (DeFi) and Blockchain Technology",
+          price: "Reading Time: 8 min",
+          location: "December 1, 2023",
+          image: "../../Sixth Section/photo-interior-modern-design-room-3d-illustration.png",
+          // Card 6: SHORT (Height 350px). Starts after the TALL Card 3.
+          heightClass: "h-[350px]",
+          topClass: "top-[2350px] md:top-[calc(520px+20px)]",
+          leftClass: "left-0 md:left-[67.5%]",
+          widthClass: "w-full md:w-[32.5%]",
+          titleSize: "text-2xl md:text-[28px] leading-tight",
+          priceSize: "text-lg md:text-[20px]",
+          locationSize: "text-base md:text-[16px]",
+          overlayBottom: "bottom-0",
+          overlayWidth: "w-full",
+          overlayHeight: "h-[60%]",
+          contentTop: "bottom-[50px]",
+          nameWidth: "max-w-full",
+        },
+      ];
+
+      /**
+       * Renders the blog posts into the container.
+       */
+      function renderBlogPosts() {
+        const container = document.getElementById("blog-cards-container");
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        const isMobile = window.innerWidth < 768; // Tailwind's 'md' breakpoint
+        const desktopHeight = TALL_H * 2 + GAP_H; // Calculate max height
+
+        if (isMobile) {
+          // On mobile, the cards are stacked. Calculate height to auto.
+          container.style.height = "auto";
+          container.classList.remove("h-[850px]", "max-h-[850px]"); // Clean up old classes
+        } else {
+          // Set fixed height for desktop staggered layout
+          container.style.height = `${desktopHeight}px`;
+          container.style.maxHeight = `${desktopHeight}px`;
+        }
+
+        blogPosts.forEach((post, index) => {
+          const cardDiv = document.createElement("div");
+          const baseClasses =
+            "rounded-[26.67px] overflow-hidden border-0 shadow-xl cursor-pointer transition-all duration-300 transform bg-gray-200 mb-6 md:mb-0";
+
+          let positionClasses;
+          if (isMobile) {
+            // Mobile: Stack vertically
+            positionClasses = `relative w-full ${post.heightClass}`;
+          } else {
+            // Desktop: Use Absolute Positioning and calculated top/height
+            positionClasses = `absolute ${post.topClass} ${post.leftClass} ${post.widthClass} ${post.heightClass}`;
+          }
+
+          cardDiv.className = `${baseClasses} ${positionClasses}`;
+
+          // Set background image from data (FIXED PATH)
+          cardDiv.style.backgroundImage = `url(${post.image})`;
+          cardDiv.style.backgroundSize = "cover";
+          cardDiv.style.backgroundPosition = "center";
+          cardDiv.style.animationDelay = `${1000 + index * 100}ms`;
+
+          // CardContent with hover logic
+          cardDiv.innerHTML = `
+            <div class="p-0 relative w-full h-full">
+                <div class="absolute left-0 ${post.overlayBottom} ${post.overlayWidth} ${post.overlayHeight} gradient-overlay-blue opacity-50"></div>
+                
+                <div class="absolute left-0 ${post.overlayBottom} ${post.overlayWidth} ${post.overlayHeight} gradient-overlay-dark"></div>
+                
+                <div class="blog-details inline-flex flex-col items-start justify-end gap-2 absolute ${post.contentTop} left-[27px] right-[27px] p-4 text-left opacity-0 transition-opacity duration-300">
+                    <h3 class="font-montserrat font-semibold text-white tracking-[0] leading-tight ${post.titleSize} max-w-full">
+                        ${post.title}
+                    </h3>
+                    <p class="font-montserrat font-medium text-neutral-100 tracking-[0] leading-normal ${post.priceSize}">
+                        ${post.price}
+                    </p>
+                    <p class="font-montserrat font-normal text-neutral-100 tracking-[0] leading-normal ${post.locationSize}">
+                        ${post.location}
+                    </p>
+                </div>
+            </div>
+            `;
+
+          container.appendChild(cardDiv);
+        });
+      }
+
+      // Initialize the section and ensure responsiveness updates
+      document.addEventListener("DOMContentLoaded", () => {
+        const section = document.getElementById("blog-section");
+        if (section) {
+          const delay = parseInt(
+            section.style
+              .getPropertyValue("--animation-delay")
+              .replace("ms", ""),
+            10
+          );
+          setTimeout(() => {
+            section.classList.add("animate-fade-in-custom");
+          }, delay - 800);
+        }
+
+        renderBlogPosts();
+        window.addEventListener("resize", renderBlogPosts);
+      });
+    </script>
+  </body>
+</html>

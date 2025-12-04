@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MAI Hero Header Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Define the custom primary color used in the original component */
+      :root {
+        --mai-primary-color: #003f6b; /* Based on background color in the top bar */
+        --material-themewhite: #ffffff; /* White color reference */
+      }
+
+      /* Custom Keyframes for Fade-in Animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-1rem);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Apply the fade-in animation class */
+      .animate-fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
+
+      /* Utility classes for styling consistency */
+      .font-montserrat {
+        font-family: "Montserrat", Helvetica, sans-serif;
+      }
+
+      /* Utility to target the custom color */
+      .text-mai-primary-color {
+        color: var(--mai-primary-color);
+      }
+
+      /* Custom Separator Style (replacing the shadcn/ui Separator component) */
+      .custom-separator {
+        height: 23px;
+        width: 1.03px;
+        background-color: #333333; /* Dark gray color for separator */
+        opacity: 0.3; /* Slight transparency */
+      }
+    </style>
+  </head>
+  <body>
+    <header
+      class="flex flex-col w-full items-start shadow-[0px_4px_4px_#003f6b26]"
+    >
+      <div
+        id="top-bar"
+        class="flex items-center justify-between px-4 md:px-[100px] py-5 w-full bg-[#003f6b] translate-y-[-1rem] opacity-0"
+        style="--animation-delay: 0ms"
+      >
+        <div class="flex items-center h-[71.01px]">
+          <div class="w-32 h-[71.07px] relative">
+            <div
+              class="absolute top-0 left-0 [text-shadow:1.04px_1.04px_2.59px_#0000004c] font-montserrat font-black text-neutral-100 text-[56.7px] tracking-[0] leading-normal"
+            >
+              MAI
+            </div>
+
+            <div
+  class="absolute top-[70px] left-[3px] [text-shadow:0px_0.18px_0.18px_#00000040] font-montserrat font-medium text-white text-[9.8px] tracking-[0] leading-normal"
+>
+  W e&nbsp;&nbsp;B u i l d&nbsp;&nbsp;H o m e s
+</div>
+
+
+            <img
+              class="absolute w-[6.68%] h-[12.02%] top-[10.59%] left-[90.20%]"
+              alt="Copyright and"
+              src="https://c.animaapp.com/mir55x8iWdeMxx/img/copyright-and-protecttion-2--streamline-ultimate-1.svg"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div
+            class="inline-flex items-center gap-5 px-5 py-[7px] rounded-[10px] bg-white hidden lg:flex"
+          >
+            <div
+              class="font-montserrat font-medium text-[#333333] text-xs tracking-[0] leading-normal whitespace-nowrap"
+            >
+              Need help? We're here for you
+            </div>
+
+            <div class="inline-flex items-center gap-[10.29px]">
+              <img
+                class="h-[35px]"
+                alt="Contact phone"
+                src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324983.svg"
+              />
+
+              <img
+                class="h-[35px]"
+                alt="Contact email"
+                src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324984.svg"
+              />
+            </div>
+          </div>
+
+          <button
+            class="inline-flex items-center gap-2.5 pl-2.5 pr-[30px] py-2 h-auto bg-[#ffffff33] hover:bg-[#ffffff4d] rounded-[50px] transition-colors"
+          >
+            <img
+              class="w-[34px] h-[34px]"
+              alt="User icon"
+              src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324077.svg"
+            />
+
+            <span
+              class="font-montserrat font-medium text-white text-[15px] tracking-[0] leading-normal whitespace-nowrap"
+            >
+              Sign In
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <nav
+        id="bottom-bar"
+        class="flex items-center justify-between px-4 md:px-[100px] py-4 w-full bg-neutral-100 translate-y-[-1rem] opacity-0"
+        style="--animation-delay: 200ms"
+      >
+        <ul
+          id="main-nav-list"
+          class="inline-flex items-center gap-[30px] list-none m-0 p-0 overflow-x-auto"
+        ></ul>
+
+        <div
+          id="action-items-container"
+          class="inline-flex items-center gap-5 hidden lg:flex"
+        >
+          <button
+            class="bg-transparent border-none cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0"
+          >
+            <img
+              class="w-[30px] h-[30px]"
+              alt="Search"
+              src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-7.svg"
+            />
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <script>
+      const navigationItems = [
+        { label: "Home", href: "#" },
+        { label: "How it Works", href: "#" },
+        { label: "Project", href: "#" },
+        { label: "Blogs", href: "#" },
+        { label: "DIY Worktops", href: "#" },
+      ];
+
+      const actionItems = [
+        {
+          icon: "https://c.animaapp.com/mir55x8iWdeMxx/img/frame-3.svg",
+          label: "Post Project",
+        },
+        {
+          icon: "https://c.animaapp.com/mir55x8iWdeMxx/img/frame.svg",
+          label: "Send Proposals",
+        },
+        {
+          icon: "https://c.animaapp.com/mir55x8iWdeMxx/img/frame-4.svg",
+          label: "Apply Internship",
+        },
+      ];
+
+      /**
+       * Renders the main navigation links.
+       */
+      function renderNavigation() {
+        const listElement = document.getElementById("main-nav-list");
+        if (!listElement) return;
+
+        listElement.innerHTML = navigationItems
+          .map(
+            (item, index) => `
+                <li key="${index}">
+                    <a
+                        href="${item.href}"
+                        class="font-montserrat font-medium text-mai-primary-color text-[17px] tracking-[0] leading-normal hover:opacity-80 transition-opacity whitespace-nowrap"
+                    >
+                        ${item.label}
+                    </a>
+                </li>
+            `
+          )
+          .join("");
+      }
+
+      /**
+       * Renders the action buttons and separators.
+       */
+      function renderActionItems() {
+        const container = document.getElementById("action-items-container");
+        if (!container) return;
+
+        // Clear previous content but keep the search button (which is already in the HTML)
+        const searchButton = container.lastElementChild;
+        container.innerHTML = "";
+
+        actionItems.forEach((item, index) => {
+          // Button
+          const buttonHTML = `
+                    <button class="inline-flex items-center gap-2.5 bg-transparent border-none cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0">
+                        <img
+                            class="w-[30px] h-[30px]"
+                            alt="${item.label}"
+                            src="${item.icon}"
+                        />
+                        <span class="font-montserrat font-medium text-[#003f6b] text-[17px] tracking-[0] leading-normal whitespace-nowrap">
+                            ${item.label}
+                        </span>
+                    </button>
+                `;
+          container.insertAdjacentHTML("beforeend", buttonHTML);
+
+          // Separator (for all but the last item)
+          if (index < actionItems.length - 1) {
+            const separatorHTML =
+              '<div class="custom-separator flex-shrink-0"></div>';
+            container.insertAdjacentHTML("beforeend", separatorHTML);
+          }
+        });
+
+        // Re-append the search button
+        container.appendChild(searchButton);
+      }
+
+      /**
+       * Applies the fade-in animation to the header bars.
+       */
+      function applyAnimations() {
+        const topBar = document.getElementById("top-bar");
+        const bottomBar = document.getElementById("bottom-bar");
+
+        [topBar, bottomBar].forEach((element) => {
+          if (element) {
+            const delayStyle =
+              element.style.getPropertyValue("--animation-delay") || "0ms";
+            const delay = parseInt(delayStyle.replace("ms", ""), 10);
+
+            setTimeout(() => {
+              element.classList.remove("opacity-0", "translate-y-[-1rem]");
+              element.classList.add("animate-fade-in");
+            }, delay);
+          }
+        });
+      }
+
+      // Initialize the page components
+      document.addEventListener("DOMContentLoaded", () => {
+        renderNavigation();
+        renderActionItems();
+        applyAnimations();
+      });
+    </script>
+  </body>
+</html>
