@@ -281,19 +281,19 @@
 
       /**
        * Generates the HTML for a single service card.
-       * Hides the last 3 cards from the grid on desktop initially (lg:opacity-0).
+       * All cards are visible initially, including the last 3.
        */
       function createCardHTML(service, delay) {
         const isAnimated = animatedCardIds.includes(service.id);
-        // Hide the animated cards in the grid on desktop initially, but keep them visible on mobile
-        const visibilityClass = isAnimated
-          ? "lg:opacity-0 lg:transition-opacity lg:duration-500"
+        // Add transition class for smooth fade out when scrolling
+        const transitionClass = isAnimated
+          ? "lg:transition-opacity lg:duration-700"
           : "";
 
         return `
                 <div 
                     id="grid-card-${service.id}"
-                    class="rounded-[13.33px] overflow-hidden border-0 shadow-none cursor-pointer hover:scale-105 transition-transform duration-300 ${visibilityClass}"
+                    class="rounded-[13.33px] overflow-hidden border-0 shadow-none cursor-pointer hover:scale-105 transition-transform duration-300 ${transitionClass}"
                     style="animation-delay: ${delay}ms;"
                 >
                     <div class="p-0 relative h-[217px]">
@@ -402,10 +402,18 @@
                 // 1. Trigger the Grid Reflow/Transition (Desktop only behavior in CSS)
                 statsContentContainer.classList.add("in-view");
 
-                // 2. Hide the original cards in the grid area
+                // 2. Fade out and hide the original cards in the grid area
                 if (isDesktop) {
                   gridCardsToToggle.forEach((card) => {
-                    if (card) card.classList.add("opacity-0");
+                    if (card) {
+                      card.classList.add("opacity-0");
+                      // After fade out completes, hide completely to prevent layout issues
+                      setTimeout(() => {
+                        if (statsContentContainer.classList.contains("in-view")) {
+                          card.style.display = "none";
+                        }
+                      }, 700); // Match the transition duration
+                    }
                   });
                 }
               } else if (entry.boundingClientRect.top > 0) {
@@ -414,10 +422,16 @@
                 // 1. Reverse the Grid Reflow/Transition
                 statsContentContainer.classList.remove("in-view");
 
-                // 2. Show the original cards back in the grid area
+                // 2. Show and fade in the original cards back in the grid area
                 if (isDesktop) {
                   gridCardsToToggle.forEach((card) => {
-                    if (card) card.classList.remove("opacity-0");
+                    if (card) {
+                      card.style.display = "block";
+                      // Small delay to ensure display change is applied before opacity transition
+                      setTimeout(() => {
+                        card.classList.remove("opacity-0");
+                      }, 10);
+                    }
                   });
                 }
               }
@@ -425,7 +439,7 @@
           },
           {
             root: null, // viewport
-            threshold: 0.1, // Trigger when 10% of the target is visible
+            threshold: 0.3, // Trigger when 30% of the target is visible for smoother transition
           }
         );
 
@@ -437,7 +451,10 @@
           if (!isDesktop) {
             // Always show the grid cards on mobile
             gridCardsToToggle.forEach((card) => {
-              if (card) card.classList.remove("opacity-0");
+              if (card) {
+                card.style.display = "block";
+                card.classList.remove("opacity-0");
+              }
             });
           }
         });
