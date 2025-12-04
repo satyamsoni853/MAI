@@ -3,19 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Why Traders Choose MAI</title>
+    <title>Why Traders Choose MAI - Staggered, No-Slide Switcher</title>
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <style>
-        /* === Combined CSS from WhyTrader.css === */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
- 
-        }
         
         .traders-section {
             padding: 80px 0;
@@ -54,17 +47,21 @@
             line-height: 1.7;
         }
 
+        /* Container for the 5 cards */
         .carousel-wrapper {
-            overflow: hidden;
             position: relative;
             margin: 0 auto;
+            max-width: 1600px; 
         }
+        
+        /* The row of cards */
         .carousel-track {
             display: flex;
+            justify-content: center; /* Center the group of cards */
             gap: 32px;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 120px 0 180px;
-            will-change: transform;
+            padding: 120px 0 180px; 
+            margin: 0 auto; 
+            width: fit-content; 
         }
 
         .trader-card {
@@ -75,7 +72,16 @@
             position: relative;
             flex-shrink: 0;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+            /* Include transform in transition for smooth staggering and content updates */
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease; 
+            opacity: 1;
         }
+        
+        /* Class for the fade effect during content change */
+        .trader-card.fade {
+            opacity: 0; 
+        }
+        
         .trader-card img {
             width: 100%;
             height: 100%;
@@ -106,6 +112,7 @@
             opacity: 0.9;
         }
 
+        /* --- STAGGERED Vertical positioning classes (Restored) --- */
         .lower-card {
             transform: translateY(180px);
         }
@@ -115,6 +122,8 @@
         .middle-card {
             transform: translateY(0);
         }
+        
+        /* --- Navigation Button Styles --- */
 
         .nav-buttons {
             display: flex;
@@ -169,32 +178,31 @@
             transform: translateY(-4px);
         }
 
+        /* --- Media Queries --- */
+        @media (max-width: 1700px) {
+            .carousel-track {
+                justify-content: flex-start;
+                margin: 0;
+                overflow-x: auto;
+            }
+        }
         @media (max-width: 992px) {
-            .lower-card {
-                transform: translateY(140px);
-            }
-            .upper-card {
-                transform: translateY(60px);
-            }
-            .trader-card {
-                min-width: 270px;
-            }
+            .lower-card { transform: translateY(140px); }
+            .upper-card { transform: translateY(60px); }
+            .trader-card { min-width: 270px; }
         }
         @media (max-width: 768px) {
-            .lower-card {
-                transform: translateY(100px);
-            }
-            .upper-card {
-                transform: translateY(40px);
-            }
-            .trader-card {
-                min-width: 250px;
-            }
+            .lower-card { transform: translateY(100px); }
+            .upper-card { transform: translateY(40px); }
+            .trader-card { min-width: 250px; }
+            .carousel-track { gap: 20px; }
+        }
+        @media (max-width: 500px) {
             .carousel-track {
-                gap: 20px;
+                 justify-content: center;
+                 overflow-x: hidden;
             }
         }
-        /* === End of Combined CSS === */
     </style>
 </head>
 <body>
@@ -233,137 +241,100 @@
     </section>
 
     <script>
-        // === TRADER DATA IN JSON FORMAT ===
+        // === TRADER DATA (Includes the position property for staggering) ===
         const tradersData = [
-            {
-                name: "Robert Fox",
-                location: "Birmingham",
-                // NOTE: Updated path for combined file context
-                img: "../../Task Images/Fifth Section/construction-industry-workers-1.png", 
-                position: "lower-card",
-            },
-            {
-                name: "Marvin McKinney",
-                location: "Greater London",
-                img: "../../Task Images/Fifth Section/construction-industry-workers.png",
-                position: "upper-card",
-            },
-            {
-                name: "Guy Hawkins",
-                location: "Birmingham",
-                img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building-1.png",
-                position: "middle-card",
-            },
-            {
-                name: "Jane Cooper",
-                location: "Greater London",
-                img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building.png",
-                position: "upper-card",
-            },
-            {
-                name: "Ronald Richards",
-                location: "Birmingham",
-                img: "../../Task Images/Fifth Section/male-construction-worker-standing-with-safty-hat-hand-crossed.png",
-                position: "lower-card",
-            },
-            {
-                name: "Esther Howard",
-                location: "Manchester",
-              img: "../../Task Images/Fifth Section/construction-industry-workers-1.png", 
-                position: "middle-card",
-            },
-            {
-                name: "Cameron Williamson",
-                location: "Leeds",
-                    img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building.png",
-                position: "upper-card",
-            },
-            {
-                name: "Brooklyn Simmons",
-                location: "Liverpool",
-              img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building-1.png",
-                position: "lower-card",
-            },
-           
-            // Add as many as you want!
+            { name: "Robert Fox", location: "Birmingham", img: "../../Task Images/Fifth Section/construction-industry-workers-1.png", position: "lower-card" },
+            { name: "Marvin McKinney", location: "Greater London", img: "../../Task Images/Fifth Section/construction-industry-workers.png", position: "upper-card" },
+            { name: "Guy Hawkins", location: "Birmingham", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building-1.png", position: "middle-card" },
+            { name: "Jane Cooper", location: "Greater London", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building.png", position: "upper-card" },
+            { name: "Ronald Richards", location: "Birmingham", img: "../../Task Images/Fifth Section/male-construction-worker-standing-with-safty-hat-hand-crossed.png", position: "lower-card" },
+            { name: "Esther Howard", location: "Manchester", img: "../../Task Images/Fifth Section/construction-industry-workers-1.png", position: "middle-card" },
+            { name: "Cameron Williamson", location: "Leeds", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building.png", position: "upper-card" },
+            { name: "Brooklyn Simmons", location: "Liverpool", img: "../../Task Images/Fifth Section/handsome-business-man-engineer-hard-hat-building-1.png", position: "lower-card" },
+            { name: "Another Trader", location: "Coventry", img: "../../Task Images/Fifth Section/construction-industry-workers.png", position: "middle-card" },
         ];
 
-        // === Combined JavaScript from WhyTrader.js ===
+        // === JavaScript Logic: Keeps Card Position, Only Changes Content ===
         document.addEventListener('DOMContentLoaded', () => {
             const track = document.getElementById('carouselTrack');
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
+            
+            const VISIBLE_CARDS = 5; 
+            let startIndex = 0; 
 
-            // Render traders from JSON
-            tradersData.forEach(trader => {
+            // 1. Initial Card Element Creation (Creates 5 visible cards)
+            for (let i = 0; i < VISIBLE_CARDS; i++) {
                 const card = document.createElement('div');
-                card.className = `trader-card ${trader.position}`;
-
-                // NOTE: The image path below is set to assume the images are in the same directory
-                // as the HTML file, or you might need to adjust the path based on your file structure.
+                card.className = `trader-card card-${i}`; 
                 card.innerHTML = `
-                    <img src="${trader.img}" alt="${trader.name}">
+                    <img class="card-img" src="" alt="">
                     <div class="overlay">
-                        <h3>${trader.name}</h3>
-                        <p>${trader.location}</p>
+                        <h3 class="card-name"></h3>
+                        <p class="card-location"></p>
                     </div>
                 `;
-
                 track.appendChild(card);
-            });
+            }
+            
+            const cardElements = Array.from(track.children);
 
-            // === Carousel Logic ===
-            const cards = document.querySelectorAll('.trader-card');
-            const totalCards = cards.length;
-            const visibleCards = 5; // Assumed based on typical carousel behavior
-            let currentIndex = 0;
 
-            const getCardWidth = () => {
-                 // Check if cards exist and return width + gap (32px from CSS)
-                if (cards.length > 0) {
-                    const cardWidth = cards[0].offsetWidth;
-                    const gap = 32;
-                    return cardWidth + gap;
+            // 2. Function to update the content of the 5 visible cards
+            const updateCardContent = (newStartIndex) => {
+                // Bounds check
+                if (newStartIndex < 0 || newStartIndex > tradersData.length - VISIBLE_CARDS) {
+                    return; 
                 }
-                return 322; // Default fallback width
+
+                // Fade out the current content
+                cardElements.forEach(card => card.classList.add('fade'));
+
+                setTimeout(() => {
+                    for (let i = 0; i < VISIBLE_CARDS; i++) {
+                        const dataIndex = newStartIndex + i;
+                        const data = tradersData[dataIndex];
+                        const card = cardElements[i];
+
+                        // Set NEW Content (Image, Name, Location)
+                        card.querySelector('.card-img').src = data.img;
+                        card.querySelector('.card-name').textContent = data.name;
+                        card.querySelector('.card-location').textContent = data.location;
+                        
+                        // *** Re-apply the trader-card base class and the position class ***
+                        // This maintains the original vertical offset (staggering)
+                        card.className = `trader-card card-${i} ${data.position}`; 
+                    }
+                    
+                    // Fade in the new content
+                    cardElements.forEach(card => card.classList.remove('fade'));
+
+                    startIndex = newStartIndex;
+                    updateButtons();
+                }, 300); // 300ms delay matches the CSS transition time for a smooth fade effect
             };
 
+            // 3. Update Buttons function (Disables arrows when limits are reached)
             const updateButtons = () => {
-                prevBtn.disabled = currentIndex === 0;
-                // Calculates if there are any remaining cards to slide to
-                nextBtn.disabled = currentIndex >= totalCards - visibleCards;
+                prevBtn.disabled = startIndex === 0;
+                nextBtn.disabled = startIndex >= tradersData.length - VISIBLE_CARDS;
             };
 
-            const slideTo = (index) => {
-                const cardWidth = getCardWidth();
-                const offset = -index * cardWidth;
-                track.style.transform = `translateX(${offset}px)`;
-                currentIndex = index;
-                updateButtons();
-            };
-
+            // 4. Navigation Button Handlers
             nextBtn.addEventListener('click', () => {
-                if (currentIndex < totalCards - visibleCards) {
-                    slideTo(currentIndex + 1);
+                if (startIndex < tradersData.length - VISIBLE_CARDS) {
+                    updateCardContent(startIndex + 1); 
                 }
             });
 
             prevBtn.addEventListener('click', () => {
-                if (currentIndex > 0) {
-                    slideTo(currentIndex - 1);
+                if (startIndex > 0) {
+                    updateCardContent(startIndex - 1);
                 }
             });
 
-            window.addEventListener('resize', () => {
-                // Recalculate position on resize to prevent breaking the layout
-                slideTo(currentIndex);
-            });
-
-            // Initial setup
-            updateButtons();
-            
-            // To ensure initial slide is applied correctly, especially after dynamic loading
-            setTimeout(() => slideTo(currentIndex), 10); 
+            // Initial load of the first 5 cards
+            updateCardContent(startIndex);
         });
     </script>
 </body>
