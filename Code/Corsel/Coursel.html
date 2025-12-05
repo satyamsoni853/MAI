@@ -88,47 +88,40 @@
         line-height: 1.1;
         margin: 0;
         max-width: 600px;
-        transform: translateY(0);
         opacity: 1;
-        transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+        transition: opacity 0.6s ease-out;
+        will-change: transform, opacity;
       }
 
       .hero-content-overlay p {
         font-size: 1.2rem;
         margin-top: 15px;
         max-width: 500px;
-        transform: translateY(0);
         opacity: 1;
-        transition: transform 0.6s ease-out 0.1s, opacity 0.6s ease-out 0.1s;
+        transition: opacity 0.6s ease-out 0.1s;
+        will-change: transform, opacity;
       }
 
-      .hero-buttons {
-        transform: translateY(0);
-        opacity: 1;
-        transition: transform 0.6s ease-out 0.2s, opacity 0.6s ease-out 0.2s;
-      }
-
-      /* Scroll animation states */
-      .hero-content-overlay.scrolled h1 {
-        transform: translateY(-30px);
-        opacity: 0;
-      }
-
-      .hero-content-overlay.scrolled p {
-        transform: translateY(-30px);
-        opacity: 0;
-      }
-
-      .hero-content-overlay.scrolled .hero-buttons {
-        transform: translateY(-30px);
-        opacity: 0;
-      }
-
-      /* Hero Buttons (Standard button styles remain the same) */
       .hero-buttons {
         margin-top: 30px;
         display: flex;
         gap: 20px;
+        opacity: 1;
+        transition: opacity 0.6s ease-out 0.2s;
+        will-change: transform, opacity;
+      }
+
+      /* Scroll animation states */
+      .hero-content-overlay.scrolled h1 {
+        opacity: 0;
+      }
+
+      .hero-content-overlay.scrolled p {
+        opacity: 0;
+      }
+
+      .hero-content-overlay.scrolled .hero-buttons {
+        opacity: 0;
       }
 
       .btn {
@@ -272,8 +265,8 @@
         <p>Get matched with trusted traders at the right price in less time.</p>
 
         <div class="hero-buttons">
-          <a href="#" class="btn btn-primary"><i class="fa-solid fa-book-open"></i> Book a Demo</a>
-          <a href="#" class="btn btn-secondary">Contact Us</a>
+          <a href="#" class="btn btn-primary"><i class="fa-solid fa-video"></i> Book a Demo</a>
+          <a href="#" class="btn btn-secondary"><i class="fa-solid fa-phone"></i> Contact Us</a>
         </div>
       </div>
 
@@ -298,24 +291,73 @@
         const totalSlides = carouselItems.length;
         let currentIndex = 0;
 
-        // --- Scroll Animation Handler ---
-        let lastScrollY = window.scrollY;
+        // --- Scroll Animation Handler with Parallax Effect ---
+        const heroH1 = heroContentOverlay.querySelector("h1");
+        const heroP = heroContentOverlay.querySelector("p");
+        const heroButtons = heroContentOverlay.querySelector(".hero-buttons");
 
         function handleScroll() {
-          const scrollY = window.scrollY;
-          const scrollThreshold = 50; // Start animation after 50px scroll
+          // Try to get scroll from parent window if in iframe, otherwise use current window
+          let scrollY = 0;
+          try {
+            scrollY = window.parent.scrollY || window.parent.pageYOffset || 0;
+          } catch (e) {
+            // If cross-origin, fall back to current window
+            scrollY = window.scrollY || window.pageYOffset || 0;
+          }
 
-          if (scrollY > scrollThreshold) {
+          // Get the iframe's position relative to parent viewport
+          let iframeTop = 0;
+          try {
+            const iframe = window.parent.document.querySelector('iframe[src*="Coursel"]');
+            if (iframe) {
+              iframeTop = iframe.getBoundingClientRect().top + scrollY;
+            }
+          } catch (e) {
+            // Cross-origin restriction
+          }
+
+          // Calculate relative scroll (how much the user has scrolled past this section)
+          const relativeScroll = Math.max(0, scrollY - iframeTop);
+
+          const scrollThreshold = 200; // Start fade after 200px scroll past this section
+
+          // Parallax effect: move content down as user scrolls (0.4 = slower movement)
+          const parallaxSpeed = 0.4;
+          const parallaxOffset = relativeScroll * parallaxSpeed;
+
+          // Apply parallax transform to each element (always active)
+          heroH1.style.transform = `translateY(${parallaxOffset}px)`;
+          heroP.style.transform = `translateY(${parallaxOffset}px)`;
+          heroButtons.style.transform = `translateY(${parallaxOffset}px)`;
+
+          // Fade out effect
+          if (relativeScroll > scrollThreshold) {
             heroContentOverlay.classList.add("scrolled");
           } else {
             heroContentOverlay.classList.remove("scrolled");
           }
-
-          lastScrollY = scrollY;
         }
 
-        // Add scroll event listener
-        window.addEventListener("scroll", handleScroll);
+        // Add scroll event listener to parent window with throttling
+        let ticking = false;
+        const scrollHandler = () => {
+          if (!ticking) {
+            window.requestAnimationFrame(() => {
+              handleScroll();
+              ticking = false;
+            });
+            ticking = true;
+          }
+        };
+
+        // Listen to parent window scroll if in iframe
+        try {
+          window.parent.addEventListener("scroll", scrollHandler);
+        } catch (e) {
+          // If cross-origin, fall back to current window
+          window.addEventListener("scroll", scrollHandler);
+        }
 
         // Initial check
         handleScroll();
