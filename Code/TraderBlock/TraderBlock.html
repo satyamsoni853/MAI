@@ -371,10 +371,41 @@
         justify-content: flex-end;
       }
 
+      /* SVG Animation Keyframes */
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(5deg);
+        }
+      }
+
+      @keyframes floatReverse {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(20px) rotate(-5deg);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.15;
+          transform: scale(1.05);
+        }
+      }
+
       .background-shape {
         position: absolute;
-        top: 20%;
-        right: 15%;
         width: 12rem;
         height: 12rem;
         opacity: 0.1;
@@ -384,13 +415,30 @@
         transition: opacity 0.3s ease;
       }
 
+      /* First SVG positioning */
+      .background-shape-1 {
+        top: 15%;
+        right: 20%;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      /* Second SVG positioning */
+      .background-shape-2 {
+        bottom: 15%;
+        left: 10%;
+        width: 10rem;
+        height: 10rem;
+        opacity: 0.08;
+        animation: floatReverse 8s ease-in-out infinite;
+      }
+
       @media (min-width: 768px) {
-        /* Show the SVG only when the card is hovered */
+        /* Show the SVGs only when the card is hovered */
         .role-card:hover .background-shape {
           display: block;
         }
 
-        /* Hide the SVG when hovering over any card and this card is not the hovered one */
+        /* Hide the SVGs when hovering over any card and this card is not the hovered one */
         .role-selector:hover .role-card:not(:hover) .background-shape {
           display: none;
         }
@@ -449,15 +497,39 @@
       let activeRole = "trader";
       const roleSelector = document.getElementById("role-selector");
 
-      // Function to return an SVG based on the role ID (for subtle background icons)
+      // Function to return TWO SVGs based on the role ID (for subtle background icons)
       function getRoleIconSVG(roleId) {
         switch (roleId) {
           case "project-owner":
-            return `<svg class="background-shape" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>`;
+            return `
+              <svg class="background-shape background-shape-1" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              </svg>
+              <svg class="background-shape background-shape-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+            `;
           case "trader":
-            return `<svg class="background-shape" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 10h-2V7c0-1.65-1.35-3-3-3s-3 1.35-3 3v3H7c-1.1 0-2 .9-2 2v7c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-7c0-1.1-.9-2-2-2zm-5-4c.55 0 1 .45 1 1v3h-2V7c0-.55.45-1 1-1z"/></svg>`;
+            return `
+              <svg class="background-shape background-shape-1" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 10h-2V7c0-1.65-1.35-3-3-3s-3 1.35-3 3v3H7c-1.1 0-2 .9-2 2v7c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-7c0-1.1-.9-2-2-2zm-5-4c.55 0 1 .45 1 1v3h-2V7c0-.55.45-1 1-1z"/>
+              </svg>
+              <svg class="background-shape background-shape-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/>
+              </svg>
+            `;
           case "intern":
-            return `<svg class="background-shape" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1.2) translate(-3, -3)"><path d="M19.4 12.5l-2.78-2.78c-.44-.44-.44-1.15 0-1.59l3.52-3.52c.3-.3.47-.7.47-1.13S20.47 2.7 20.17 2.4l-1.42-1.42c-.3-.3-.7-.47-1.13-.47s-.83.17-1.13.47l-3.52 3.52c-.44.44-1.15.44-1.59 0L9.5 2.58C9.06 2.14 8.35 2.14 7.91 2.58L.47 10.02c-.3.3-.47.7-.47 1.13s.17.83.47 1.13l7.44 7.44c.44.44 1.15.44 1.59 0l7.44-7.44c.44-.44.44-1.15 0-1.59zM9.5 13.5l-2-2 4-4 2 2-4 4z"/><circle cx="18" cy="18" r="4" opacity="0.5"/></g></svg>`;
+            return `
+              <svg class="background-shape background-shape-1" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <g transform="scale(1.2) translate(-3, -3)">
+                  <path d="M19.4 12.5l-2.78-2.78c-.44-.44-.44-1.15 0-1.59l3.52-3.52c.3-.3.47-.7.47-1.13S20.47 2.7 20.17 2.4l-1.42-1.42c-.3-.3-.7-.47-1.13-.47s-.83.17-1.13.47l-3.52 3.52c-.44.44-1.15.44-1.59 0L9.5 2.58C9.06 2.14 8.35 2.14 7.91 2.58L.47 10.02c-.3.3-.47.7-.47 1.13s.17.83.47 1.13l7.44 7.44c.44.44 1.15.44 1.59 0l7.44-7.44c.44-.44.44-1.15 0-1.59zM9.5 13.5l-2-2 4-4 2 2-4 4z"/>
+                  <circle cx="18" cy="18" r="4" opacity="0.5"/>
+                </g>
+              </svg>
+              <svg class="background-shape background-shape-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+              </svg>
+            `;
           default:
             return "";
         }
