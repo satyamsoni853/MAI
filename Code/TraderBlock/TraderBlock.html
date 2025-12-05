@@ -433,8 +433,13 @@
       }
 
       @media (min-width: 768px) {
-        /* Show the SVGs only when the card is hovered */
+        /* Show the SVGs when the card is hovered */
         .role-card:hover .background-shape {
+          display: block;
+        }
+
+        /* Show the SVGs on the active card when not hovering */
+        .role-selector:not(:hover) .role-card.active .background-shape {
           display: block;
         }
 
