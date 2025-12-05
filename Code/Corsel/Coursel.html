@@ -88,12 +88,40 @@
         line-height: 1.1;
         margin: 0;
         max-width: 600px;
+        transform: translateY(0);
+        opacity: 1;
+        transition: transform 0.6s ease-out, opacity 0.6s ease-out;
       }
 
       .hero-content-overlay p {
         font-size: 1.2rem;
         margin-top: 15px;
         max-width: 500px;
+        transform: translateY(0);
+        opacity: 1;
+        transition: transform 0.6s ease-out 0.1s, opacity 0.6s ease-out 0.1s;
+      }
+
+      .hero-buttons {
+        transform: translateY(0);
+        opacity: 1;
+        transition: transform 0.6s ease-out 0.2s, opacity 0.6s ease-out 0.2s;
+      }
+
+      /* Scroll animation states */
+      .hero-content-overlay.scrolled h1 {
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+
+      .hero-content-overlay.scrolled p {
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+
+      .hero-content-overlay.scrolled .hero-buttons {
+        transform: translateY(-30px);
+        opacity: 0;
       }
 
       /* Hero Buttons (Standard button styles remain the same) */
@@ -266,8 +294,31 @@
         const carouselItems = document.querySelectorAll(".carousel-item");
         const thumbnailImage = document.querySelector(".thumbnail-preview img");
         const dotsContainer = document.getElementById("carouselDots");
+        const heroContentOverlay = document.querySelector(".hero-content-overlay");
         const totalSlides = carouselItems.length;
         let currentIndex = 0;
+
+        // --- Scroll Animation Handler ---
+        let lastScrollY = window.scrollY;
+
+        function handleScroll() {
+          const scrollY = window.scrollY;
+          const scrollThreshold = 50; // Start animation after 50px scroll
+
+          if (scrollY > scrollThreshold) {
+            heroContentOverlay.classList.add("scrolled");
+          } else {
+            heroContentOverlay.classList.remove("scrolled");
+          }
+
+          lastScrollY = scrollY;
+        }
+
+        // Add scroll event listener
+        window.addEventListener("scroll", handleScroll);
+
+        // Initial check
+        handleScroll();
 
         // --- 1. Dynamic Dot Creation ---
         function createDots() {

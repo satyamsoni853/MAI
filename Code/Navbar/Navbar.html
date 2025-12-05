@@ -91,7 +91,29 @@
         transform: translateX(-10px);
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         max-width: 0;
-        overflow: hidden;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: thin;
+        scrollbar-color: #003f6b #e0e0e0;
+      }
+
+      /* Custom scrollbar for webkit browsers */
+      .expanding-icon-text::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      .expanding-icon-text::-webkit-scrollbar-track {
+        background: #e0e0e0;
+        border-radius: 2px;
+      }
+
+      .expanding-icon-text::-webkit-scrollbar-thumb {
+        background: #003f6b;
+        border-radius: 2px;
+      }
+
+      .expanding-icon-text::-webkit-scrollbar-thumb:hover {
+        background: #002a4a;
       }
 
       .expanding-icon-btn:hover .expanding-icon-text {
