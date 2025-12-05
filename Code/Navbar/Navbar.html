@@ -52,51 +52,53 @@
         opacity: 0.3; /* Slight transparency */
       }
 
-      /* Tooltip styles */
-      .tooltip-container {
+      /* Expanding icon button styles */
+      .expanding-icon-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background-color: white;
+        border-radius: 50px;
+        padding: 0;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 35px;
+        height: 35px;
         position: relative;
-        display: inline-block;
       }
 
-      .tooltip-text {
-        visibility: hidden;
-        background-color: #003f6b;
-        color: white;
-        text-align: center;
-        padding: 8px 16px;
-        border-radius: 8px;
-        position: absolute;
-        z-index: 1000;
-        /* Position to the right of the icon */
-        left: calc(100% + 10px);
-        top: 50%;
-        /* Initial state for transition */
-        transform: translateY(-50%) translateX(-10px);
+      .expanding-icon-btn:hover {
+        width: auto;
+        padding-right: 16px;
+        box-shadow: 0 4px 12px rgba(0, 63, 107, 0.2);
+      }
+
+      .expanding-icon-btn img {
+        height: 35px;
+        width: 35px;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+      }
+
+      .expanding-icon-text {
+        color: #003f6b;
+        font-family: "Montserrat", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
         white-space: nowrap;
         opacity: 0;
-        transition: all 0.3s ease;
-        font-size: 13px;
-        font-family: "Montserrat", sans-serif;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        font-weight: 500;
+        transform: translateX(-10px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        max-width: 0;
+        overflow: hidden;
       }
 
-      .tooltip-text::before {
-        content: "";
-        position: absolute;
-        right: 100%;
-        top: 50%;
-        margin-top: -6px;
-        border-width: 6px;
-        border-style: solid;
-        border-color: transparent #003f6b transparent transparent;
-      }
-
-      .tooltip-container:hover .tooltip-text {
-        visibility: visible;
+      .expanding-icon-btn:hover .expanding-icon-text {
         opacity: 1;
-        /* Final state for transition */
-        transform: translateY(-50%) translateX(0);
+        transform: translateX(0);
+        max-width: 200px;
+        margin-left: 4px;
       }
     </style>
   </head>
@@ -129,7 +131,8 @@
           </div>
         </div>
 
-        <div class="flex items-center gap-4 **mx-auto**"> <div
+        <div class="flex items-center gap-4 **mx-auto**">
+          <div
             class="inline-flex items-center gap-5 px-5 py-[7px] rounded-[10px] bg-white hidden lg:flex"
           >
             <div
@@ -139,43 +142,41 @@
             </div>
 
             <div class="inline-flex items-center gap-[10.29px]">
-              <div class="tooltip-container">
+              <button class="expanding-icon-btn">
                 <img
-                  class="h-[35px] cursor-pointer"
                   alt="Contact phone"
                   src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324983.svg"
                 />
-                <span class="tooltip-text">Book Demo</span> 
-              </div>
+                <span class="expanding-icon-text">Book Demo</span>
+              </button>
 
-              <div class="tooltip-container">
+              <button class="expanding-icon-btn">
                 <img
-                  class="h-[35px] cursor-pointer"
                   alt="Contact email"
                   src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324984.svg"
                 />
-                <span class="tooltip-text">Contact Us</span>
-              </div>
+                <span class="expanding-icon-text">Contact Us</span>
+              </button>
             </div>
           </div>
         </div>
-        
-        <div class="flex items-center gap-4 **ml-auto**"> 
-            <button
-                class="inline-flex items-center gap-2.5 pl-2.5 pr-[30px] py-2 h-auto bg-[#ffffff33] hover:bg-[#ffffff4d] rounded-[50px] transition-colors"
-            >
-                <img
-                class="w-[34px] h-[34px]"
-                alt="User icon"
-                src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324077.svg"
-                />
 
-                <span
-                class="font-montserrat font-medium text-white text-[15px] tracking-[0] leading-normal whitespace-nowrap"
-                >
-                Sign In
-                </span>
-            </button>
+        <div class="flex items-center gap-4 **ml-auto**">
+          <button
+            class="inline-flex items-center gap-2.5 pl-2.5 pr-[30px] py-2 h-auto bg-[#ffffff33] hover:bg-[#ffffff4d] rounded-[50px] transition-colors"
+          >
+            <img
+              class="w-[34px] h-[34px]"
+              alt="User icon"
+              src="https://c.animaapp.com/mir55x8iWdeMxx/img/frame-1707324077.svg"
+            />
+
+            <span
+              class="font-montserrat font-medium text-white text-[15px] tracking-[0] leading-normal whitespace-nowrap"
+            >
+              Sign In
+            </span>
+          </button>
         </div>
       </div>
 
