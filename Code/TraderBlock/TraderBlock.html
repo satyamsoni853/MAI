@@ -3,9 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      MAI Role Selector Section - Hover to Expand
-    </title>
+    <title>MAI Role Selector Section - Hover to Expand</title>
     <style>
       /* ---------------------------------------------------- */
       /* --- 1. Base Styles and Reset --- */
@@ -14,7 +12,6 @@
       html {
         margin: 0;
         padding: 0;
-      
       }
 
       .container {
@@ -78,8 +75,7 @@
         transition: all 0.3s ease-in-out;
         cursor: pointer;
         border-radius: 1.5rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         overflow: hidden;
         transform: scale(1);
         height: 200px;
@@ -127,18 +123,18 @@
           background-image: linear-gradient(135deg, #0c399b 0%, #1e58c0 100%);
         }
 
-        /* NON-ACTIVE, NON-HOVERED cards shrink */
+        /* When hovering over any card, all non-hovered cards shrink */
         .role-selector:hover .role-card:not(:hover) {
           width: 20%;
           background-color: #0c2d71;
           background-image: none;
         }
-        
-        /* If a card is active AND we are hovering over a different card, the active card shrinks */
-        .role-selector:hover .role-card.active:not(:hover) {
-            width: 20%;
-            background-color: #0c2d71;
-            background-image: none;
+
+        /* When NOT hovering, the active card stays expanded */
+        .role-selector:not(:hover) .role-card.active {
+          width: 60%;
+          background-color: #0c399b;
+          background-image: linear-gradient(135deg, #0c399b 0%, #1e58c0 100%);
         }
       }
 
@@ -151,7 +147,7 @@
         justify-content: center;
         padding: 1rem;
         transition: opacity 0.3s;
-        
+
         z-index: 15;
       }
 
@@ -175,11 +171,13 @@
         opacity: 0;
         pointer-events: none;
       }
+
       @media (min-width: 768px) {
         .role-card:hover .vertical-text-container {
           opacity: 0;
           pointer-events: none;
         }
+        /* When hovering over ANY card, show vertical text on non-hovered cards */
         .role-selector:hover .role-card:not(:hover) .vertical-text-container {
           opacity: 1;
           pointer-events: auto;
@@ -212,12 +210,12 @@
         left: 50%;
         /* Fix to show full image */
         transform: translateX(-50%);
-        height: auto; 
-        max-height: 100%; 
+        height: auto;
+        max-height: 100%;
         width: auto;
         max-width: none;
-        object-fit: contain; 
-        
+        object-fit: contain;
+
         opacity: 1;
         transition: opacity 0.3s;
         border-radius: 0 0 1.5rem 1.5rem;
@@ -227,15 +225,14 @@
       .role-card.active .image-peek-container {
         opacity: 0;
       }
+
       @media (min-width: 768px) {
         .role-card:hover .image-peek-container {
           opacity: 0;
         }
-        .role-card.active:not(:hover) .image-peek-container {
-          /* If an active card isn't hovered, it should still show content, 
-             but since we are forcing non-hovered cards to shrink on desktop 
-             (in the core logic), we should keep it hidden. */
-          opacity: 0;
+        /* When hovering over ANY card, show peek image on non-hovered cards */
+        .role-selector:hover .role-card:not(:hover) .image-peek-container {
+          opacity: 1;
         }
       }
 
@@ -269,11 +266,18 @@
         opacity: 1;
         pointer-events: auto;
       }
+
       /* Show content when hovered (DESKTOP) */
       @media (min-width: 768px) {
         .role-card:hover .content-area {
           opacity: 1;
           pointer-events: auto;
+        }
+
+        /* When hovering over ANY card, hide content on non-hovered cards (including active) */
+        .role-selector:hover .role-card:not(:hover) .content-area {
+          opacity: 0;
+          pointer-events: none;
         }
       }
 
@@ -315,8 +319,7 @@
         padding: 0.75rem 1.5rem;
         border-radius: 9999px;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-          0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
         border: none;
         cursor: pointer;
         text-wrap: nowrap;
@@ -377,15 +380,19 @@
         opacity: 0.1;
         color: white;
         /* HIDE THE SVG by default */
-        display: none; 
+        display: none;
         transition: opacity 0.3s ease;
       }
 
       @media (min-width: 768px) {
-        /* Show the SVG only when the card is hovered OR when it is the active card */
-        .role-card:hover .background-shape,
-        .role-card.active .background-shape {
-          display: block; 
+        /* Show the SVG only when the card is hovered */
+        .role-card:hover .background-shape {
+          display: block;
+        }
+
+        /* Hide the SVG when hovering over any card and this card is not the hovered one */
+        .role-selector:hover .role-card:not(:hover) .background-shape {
+          display: none;
         }
       }
     </style>
@@ -394,14 +401,11 @@
     <div class="container">
       <div>
         <section class="header-section">
-          <h1 class="main-title">
-            MAI Leading Innovation in Construction & Property Improvement
-          </h1>
+          <h1 class="main-title">MAI Leading Innovation in Construction & Property Improvement</h1>
           <p class="main-subtitle">
-            MAI stands at the forefront of innovation in construction and
-            property improvement, hosting a wide range of Projects from painting
-            and furnishing to bathroom upscaling, kitchen remodelling, stone
-            worktop installations, and more.
+            MAI stands at the forefront of innovation in construction and property improvement,
+            hosting a wide range of Projects from painting and furnishing to bathroom upscaling,
+            kitchen remodelling, stone worktop installations, and more.
           </p>
         </section>
 
@@ -419,8 +423,7 @@
             "Register now to find trusted home services and verified traders for free online. With MAI, you get full project transparency from start to finish. Use advanced filters to make faster, smarter decisions.",
           image_url: "../../Task%20Images/Fouth%20Section/Intern.png", // Main image path
           alt: "A man in a hard hat and vest, representing a Trader (narrow view).",
-          active_alt:
-            "A man in a hard hat and vest, representing a Trader (wide view).", // Same image, different context
+          active_alt: "A man in a hard hat and vest, representing a Trader (wide view).", // Same image, different context
         },
         {
           id: "project-owner",
@@ -429,8 +432,7 @@
             "Register now to find trusted home services and verified traders for free online. With MAI, you get full project transparency from start to finish. Use advanced filters to make faster, smarter decisions.",
           image_url: "../../Task%20Images/Fouth%20Section/Project%20Owner.png", // Main image path
           alt: "A man holding a coffee cup, representing a Project Owner (narrow view).",
-          active_alt:
-            "A man holding a coffee cup, representing a Project Owner (wide view).", // Same image, different context
+          active_alt: "A man holding a coffee cup, representing a Project Owner (wide view).", // Same image, different context
         },
         {
           id: "intern",
@@ -439,13 +441,12 @@
             "Register now to find trusted home services and verified traders for free online. With MAI, you get full project transparency from start to finish. Use advanced filters to make faster, smarter decisions.",
           image_url: "../../Task%20Images/Fouth%20Section/Trader.png", // Main image path
           alt: "A man in a hard hat and vest, representing an Intern (narrow view).",
-          active_alt:
-            "A construction worker representing an Intern (wide view).", // Same image, different context
+          active_alt: "A construction worker representing an Intern (wide view).", // Same image, different context
         },
       ];
 
-      // MODIFIED: Start with no active role initially (Desktop will rely purely on hover)
-      let activeRole = null;
+      // MODIFIED: Start with the first role (Trader) initially open
+      let activeRole = "trader";
       const roleSelector = document.getElementById("role-selector");
 
       // Function to return an SVG based on the role ID (for subtle background icons)
@@ -495,9 +496,7 @@
                         <div class="text-block">
                             <h2 class="active-title">${role.title}</h2>
                             <div class="description-box">
-                                <p class="description-text">${
-                                  role.description
-                                }</p>
+                                <p class="description-text">${role.description}</p>
                             </div>
                             <div class="button-group">
                                 <button class="button main-button">${mainButtonText}</button>
@@ -507,8 +506,8 @@
                         
                         <div class="active-image-container">
                              <img src="${role.image_url}" alt="${
-                               role.active_alt
-                             }" onerror="this.onerror=null;this.src='https://placehold.co/300x600/1e58c0/ffffff?text=Active+Image+Load+Failed';">
+            role.active_alt
+          }" onerror="this.onerror=null;this.src='https://placehold.co/300x600/1e58c0/ffffff?text=Active+Image+Load+Failed';">
                         </div>
                     </div>
                 `;
@@ -544,7 +543,7 @@
           } else {
             activeRole = roleId;
           }
-          
+
           renderRoles();
 
           // Scrolls to the top of the selector section on mobile click
