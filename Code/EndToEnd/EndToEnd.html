@@ -46,54 +46,57 @@
       /* --- DYNAMIC SCROLL ANIMATION CSS (REFLOW) ---        */
       /* ---------------------------------------------------- */
 
-      /* Container for the Stats Section (Initial State: 1 column) */
+      /* Container for the Stats Section */
       #stats-content-container {
         display: grid;
-        grid-template-columns: 1fr; /* Default: stack stats above images on mobile/default */
+        grid-template-columns: 1fr; /* Default: stack stats above images on mobile */
         gap: 3rem;
         transition: grid-template-columns 1.2s ease-in-out;
       }
 
-      /* Target state when in view (Desktop only: 2 columns, stats on left, images on right) */
+      /* Desktop: Always use 2-column layout to prevent text shifting */
       @media (min-width: 1024px) {
-        /* Tailwind's 'lg' breakpoint */
-        #stats-content-container.in-view {
-          /* Change to a 2-column layout (stats on left, animated images on right) */
+        #stats-content-container {
           grid-template-columns: 3fr 2fr;
+          align-items: start;
         }
       }
 
       /* Apply to the stats description itself (1st column) */
       .stats-text {
-        grid-area: stats;
-        transition: all 1.2s ease-in-out;
+        grid-column: 1 / 2;
+        grid-row: 1;
+        transition: opacity 0.6s ease-in-out;
       }
 
       /* Apply to the animated images block (2nd column) */
       .animated-images-block {
-        grid-area: images;
         min-height: 400px;
         transition: all 1.2s ease-in-out;
         position: relative; /* Container for absolute children */
       }
 
-      /* Initial positioning for desktop: Place animated images *below* stats in the 1-column layout */
-      .stats-text {
-        grid-row: 1;
-      }
-      .animated-images-block {
-        grid-row: 2;
+      /* Mobile: Stack vertically */
+      @media (max-width: 1023px) {
+        .stats-text {
+          grid-column: 1;
+          grid-row: 1;
+        }
+        .animated-images-block {
+          grid-column: 1;
+          grid-row: 2;
+        }
       }
 
-      /* Final positioning for desktop (in-view): Place animated images *next to* stats in the 2-column layout */
+      /* Desktop: Side by side */
       @media (min-width: 1024px) {
-        #stats-content-container.in-view .stats-text {
+        .stats-text {
           grid-column: 1 / 2;
-          grid-row: 1 / 2;
+          grid-row: 1;
         }
-        #stats-content-container.in-view .animated-images-block {
+        .animated-images-block {
           grid-column: 2 / 3;
-          grid-row: 1 / 2;
+          grid-row: 1;
         }
       }
 
